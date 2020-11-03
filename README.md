@@ -1,4 +1,4 @@
-# Lawgic
+# Lawgic: 유사 판례 검색 서비스
 
 ## git commit message convention
 ### message format
