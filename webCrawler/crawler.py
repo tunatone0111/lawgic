@@ -1,36 +1,39 @@
-import numpy as np
 import requests
+from bs4 import NavigableString
 from bs4 import BeautifulSoup
 
-class Crawler():
-  def __init__(self):
-    self.uri = 'http://www.law.go.kr/precScListR.do'
-    self.query = {'q': '*',
-                  'section': 'bdyText',
-                  'outmax': 10,
-                  'pg': 1,
-                  'sort': [21,10,30],
-                  'precSeq': 0,
-                  'dtlYn': 'N'}
-    
-  def _parse(self, ps):
-    pans = []
-    for i in range(len(ps)//2):
-      pan = {}
-      pan['title'], pan['tag'] = ps[2*i].text.split('\xa0 ')
-      pan['content'] = ps[2*i+1].text
-      pans.append(pan)
-    return pans
+source = requests.get(
+    f"http://www.law.go.kr/precScListR.do?q=*&section=bdyText&outmax=2&pg=1&fsort=21,10,30&precSeq=0&dtlYn=N").text
 
-  def gather(self, max, pg):
-    self.query['outmax'] = max
-    self.query['pg'] = pg
-    source = requests.get(self.uri, self.query).text
-    soup = BeautifulSoup(source, "html.parser")
-    ps = soup.select('tbody a')
-    return self._parse(ps)
+soup = BeautifulSoup(source, "lxml")
 
-crawler = Crawler()
+anchors = soup.select("td.tl > a")
 
-res = np.array(crawler.gather(max=10, pg=1))
-print(res)
+ids = []
+for anchor in anchors:
+    ids.append(anchor["onclick"].split("'")[1])
+
+for id in ids:
+    text = requests.get(f"https://www.law.go.kr/precInfoR.do?precSeq={id}&vSct=*").text
+    soup = BeautifulSoup(text, "lxml")
+
+    sa = soup.select_one("#sa")
+    p = sa.find_next("p")
+    print(p.text)  # <p> {p.text} </p>
+
+    sa = soup.select_one("#yo")
+    p = sa.find_next("p")
+    print(p.text)  # <p> {p.text} </p>
+
+    sa = soup.select_one("#conLsJo")
+    p = sa.find_next("p")
+    print(p.text)  # <p> {p.text} </p>
+
+    sa = soup.select_one("#jun")
+    junmun = ""
+    for sibling in sa.next_siblings:
+        if isinstance(sibling, NavigableString):
+            continue
+        junmun += sibling.text
+
+    print(junmun)
