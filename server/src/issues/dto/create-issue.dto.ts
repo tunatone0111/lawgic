@@ -1,14 +1,21 @@
-import { IsNumber, IsString, Length } from 'class-validator';
-import { Prec } from 'src/precs/schemas/prec.schema';
+import {
+  ArrayMaxSize,
+  ArrayMinSize,
+  IsMongoId,
+  IsNumber,
+  IsString,
+} from 'class-validator';
+import { Types } from 'mongoose';
 
 export class CreateIssueDto {
   @IsString()
   readonly text: string;
 
-  @IsNumber()
-  @Length(10)
+  @IsNumber({}, { each: true })
+  @ArrayMinSize(10)
+  @ArrayMaxSize(768)
   readonly embedding: number[];
 
-  @IsString()
-  readonly prec: Prec;
+  @IsMongoId()
+  readonly prec?: Types.ObjectId;
 }

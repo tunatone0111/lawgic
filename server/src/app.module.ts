@@ -7,7 +7,6 @@ import { MongooseModule } from '@nestjs/mongoose';
 
 import { UsersModule } from './users/users.module';
 
-import { EmbedderService } from './embedder/embedder.service';
 import { PrecsModule } from './precs/precs.module';
 import { IssuesModule } from './issues/issues.module';
 import configuration from './config/configuration';
@@ -23,6 +22,6 @@ const dbInfo = configuration().database;
     IssuesModule,
   ],
   controllers: [AppController],
-  providers: [AppService, EmbedderService],
+  providers: [AppService],
 })
 export class AppModule {}
