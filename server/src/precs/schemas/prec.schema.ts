@@ -1,7 +1,7 @@
 import { Types } from 'mongoose';
 import { Document } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Issue } from './issue.schema';
+import { Issue } from '../../issues/schemas/issue.schema';
 
 export type PrecDocument = Prec & Document;
 

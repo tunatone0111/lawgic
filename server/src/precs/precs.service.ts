@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Prec, PrecDocument } from 'src/schemas/prec.schema';
-import { CreatePrecDto } from 'src/dto/create-prec.dto';
+import { Prec, PrecDocument } from 'src/precs/schemas/prec.schema';
+import { CreatePrecDto } from 'src/precs/dto/create-prec.dto';
 
 @Injectable()
 export class PrecsService {

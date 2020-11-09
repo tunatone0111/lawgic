@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Issue, IssueDocument } from 'src/schemas/issue.schema';
-import { CreateIssueDto } from 'src/dto/create-issue.dto';
+import { Issue, IssueDocument } from 'src/issues/schemas/issue.schema';
+import { CreateIssueDto } from 'src/issues/dto/create-issue.dto';
 
 @Injectable()
 export class IssuesService {

@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
-import { CreateIssueDto } from 'src/dto/create-issue.dto';
+import { CreateIssueDto } from 'src/issues/dto/create-issue.dto';
 import { IssuesService } from './issues.service';
 
 @Controller('api/issues')

@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { IssuesService } from './issues.service';
 import { IssuesController } from './issues.controller';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Issue, IssueSchema } from 'src/schemas/issue.schema';
+import { Issue, IssueSchema } from 'src/issues/schemas/issue.schema';
 
 @Module({
   imports: [

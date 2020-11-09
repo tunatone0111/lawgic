@@ -1,4 +1,4 @@
-import { Prec } from 'src/schemas/prec.schema';
+import { Prec } from 'src/precs/schemas/prec.schema';
 
 export class CreateIssueDto {
   text: string;
