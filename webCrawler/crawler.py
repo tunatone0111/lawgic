@@ -37,7 +37,8 @@ for page in [9]:
             subtitle = soup.select_one(".subtit1").text.strip()
             prec['date'] = re.findall(
                 '[0-9]{4}\. [0-9]{1,2}\. [0-9]{1,2}\.', subtitle)[0]
-            prec['caseNum'] = re.findall('[0-9]{4}.[0-9]{4,6}', subtitle)[0]
+            prec['caseNum'] = re.findall(
+                '[0-9]{2,4}[가-힣]{1,2}[0-9]{1,6}', subtitle)[0]
 
             sa = soup.select_one("#sa")
             p = sa.find_next("p")
