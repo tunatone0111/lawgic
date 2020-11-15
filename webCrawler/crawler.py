@@ -4,6 +4,8 @@ from bs4 import BeautifulSoup
 import json
 from tqdm import tqdm, trange
 import re
+import sys
+from time import sleep
 
 
 def parse_statements(raw):
@@ -15,8 +17,16 @@ def parse_statements(raw):
     return ss, n if n == 1 else n-1
 
 
+if __name__ == '__main__':
+    if len(sys.argv) < 3:
+        print('please enter the arguments')
+        sys.exit()
+    pages = [(int(sys.argv[1])), (int(sys.argv[2]))]
+
+
 N = 10000
-for page in [9]:
+
+for page in trange(pages[0], pages[1]+1):
     source = requests.get(
         f"http://www.law.go.kr/precScListR.do?q=*&section=bdyText&outmax={N}&pg={page}&fsort=21,10,30&precSeq=0&dtlYn=N").text
 
@@ -28,12 +38,22 @@ for page in [9]:
 
     precs = list()
     for id in tqdm(ids):
-        text = requests.get(
-            f"https://www.law.go.kr/precInfoR.do?precSeq={id}&vSct=*").text
-        soup = BeautifulSoup(text, "lxml")
+        while True:
+            try:
+                text = requests.get(
+                    f"https://www.law.go.kr/precInfoR.do?precSeq={id}&vSct=*").text
+                soup = BeautifulSoup(text, "lxml")
+            except:
+                print("connection error. retry in 10 secs...")
+                sleep(10)
+                continue
+            break
 
         prec = dict()
         try:
+            title = soup.select_one('h2').text.strip()
+            prec['title'] = title
+
             subtitle = soup.select_one(".subtit1").text.strip()
             prec['date'] = re.findall(
                 '[0-9]{4}\. [0-9]{1,2}\. [0-9]{1,2}\.', subtitle)[0]
@@ -41,12 +61,16 @@ for page in [9]:
                 '[0-9]{2,4}[가-힣]{1,2}[0-9]{1,6}', subtitle)[0]
 
             sa = soup.select_one("#sa")
-            p = sa.find_next("p")
-            prec['issues'], prec['order'] = parse_statements(p.text)
+            prec['issues'] = None
+            if sa != None:
+                p = sa.find_next("p")
+                prec['issues'], prec['order'] = parse_statements(p.text)
 
             sa = soup.select_one("#yo")
-            p = sa.find_next("p")
-            prec['yo'], _ = parse_statements(p.text)
+            prec['yo'] = None
+            if sa != None:
+                p = sa.find_next("p")
+                prec['yo'], _ = parse_statements(p.text)
 
             sa = soup.select_one("#conLsJo")
             if sa != None:
@@ -68,14 +92,15 @@ for page in [9]:
             for sibling in sa.next_siblings:
                 if isinstance(sibling, NavigableString):
                     continue
-                junmun += sibling.text
+                junmun += sibling.text + '\n'
 
-            prec['wholePrec'] = re.sub('\\n.*', '', junmun)
-            prec['judge'] = re.findall('\\n.*', junmun)[0].strip()
+            prec['wholePrec'] = re.sub('\\n\\n.*', '', junmun).strip()
+            prec['judge'] = re.findall('\\n\\n.*', junmun)[0].strip()
 
             precs.append(prec)
 
         except:
+            print(sys.exc_info())
             continue
 
     with open(f'precs/precs_{page}.json', 'w', encoding='UTF-8') as f:
