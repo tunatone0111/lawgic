@@ -1,7 +1,5 @@
-import { Types } from 'mongoose';
 import { Document } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Prec } from '../../precs/schemas/prec.schema';
 
 export type IssueDocument = Issue & Document;
 
@@ -10,11 +8,14 @@ export class Issue {
   @Prop({ required: true })
   text: string;
 
-  @Prop({ required: true })
+  @Prop()
   embedding: number[];
 
-  @Prop({ type: Types.ObjectId, ref: 'Prec', default: null })
-  prec: Prec;
+  @Prop({ required: true })
+  prec: string;
+
+  @Prop()
+  refPrecs: string[];
 }
 
 export const IssueSchema = SchemaFactory.createForClass(Issue);

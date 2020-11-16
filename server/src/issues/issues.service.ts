@@ -18,4 +18,8 @@ export class IssuesService {
   async findAll(): Promise<Issue[]> {
     return this.issueModel.find().exec();
   }
+
+  async embed(): Promise<number[]> {
+    return;
+  }
 }
