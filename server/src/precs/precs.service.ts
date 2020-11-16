@@ -7,8 +7,8 @@ import { Prec, PrecDocument } from 'src/precs/schemas/prec.schema';
 export class PrecsService {
   constructor(@InjectModel(Prec.name) private precModel: Model<PrecDocument>) {}
 
-  async findAll(): Promise<Prec[]> {
-    return await this.precModel.find().exec();
+  async findAll(filt = {}): Promise<Prec[]> {
+    return await this.precModel.find(filt).exec();
   }
 
   async findOne(id: string): Promise<Prec> {

@@ -1,9 +1,15 @@
 import { Module } from '@nestjs/common';
+import { MongooseModule } from '@nestjs/mongoose';
+import { PrecsService } from 'src/precs/precs.service';
+import { Prec, PrecSchema } from 'src/precs/schemas/prec.schema';
 import { EmbedController } from './embed.controller';
 import { EmbedService } from './embed.service';
 
 @Module({
+  imports: [
+    MongooseModule.forFeature([{ name: Prec.name, schema: PrecSchema }]),
+  ],
   controllers: [EmbedController],
-  providers: [EmbedService]
+  providers: [EmbedService, PrecsService],
 })
 export class EmbedModule {}
