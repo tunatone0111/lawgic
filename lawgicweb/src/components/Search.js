@@ -36,7 +36,9 @@ function Search() {
 	return (
 		<div className="top">
 			<div style={{ display: "flex", padding: "20px" }}>
-				<img src={Logo} width="100px" style={{ marginRight: "20px" }} />
+				<a href="/">
+					<img src={Logo} width="100px" style={{ marginRight: "20px" }} />
+				</a>
 				<textarea
 					className="form-control"
 					style={{ borderRadius: "20px" }}
@@ -52,27 +54,15 @@ function Search() {
 				</div>
 			</div>
 
-			<div style={{ marginTop: "20px" }}>
-				<Prec
-					title="손배배상청구의소 [서울고등법원
-							2020.5.28.,선고,2018나2068927,판결:상고]"
-					content="With supporting text below as a natural lead-in to additional
-							content."
-				/>
-				<Prec title="hello" content="world" />
-				<Prec title="hello" content="world" />
-				<Prec title="hello" content="world" />
-				<Prec title="hello" content="world" />
-				{precs.map((prec) => (
-					<Prec title={prec.caseNum} content={prec.title} />
-				))}
+			<div style={{ marginTop: "20px" }}></div>
+			{precs.map((prec) => (
+				<Prec title={prec.caseNum} content={prec.title} />
+			))}
 
-				<div style={{ marginTop: "20px" }}>
-					{comments.map((comment) => (
-						<Prec title={comment.email} content={comment.body} />
-					))}
-				</div>
-			</div>
+			{/* <div style={{ marginTop: "20px" }}></div>
+			{comments.map((comment) => (
+				<Prec title={comment.email} content={comment.body} />
+			))} */}
 
 			<nav aria-label="Page navigation example">
 				<ul className="pagination">
