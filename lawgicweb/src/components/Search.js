@@ -2,6 +2,7 @@ import "./Search.css";
 import Logo from "../assets/logo.PNG";
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
+import Prec from "./Prec";
 
 function Search() {
 	const location = useLocation();
@@ -43,66 +44,16 @@ function Search() {
 			</div>
 
 			<div style={{ marginTop: "20px" }}>
-				<div className="card">
-					<div className="card-body">
-						<h6 className="card-title">
-							손배배상청구의소 [서울고등법원
-							2020.5.28.,선고,2018나2068927,판결:상고]
-						</h6>
-						<p className="card-text">
-							With supporting text below as a natural lead-in to additional
-							content.
-						</p>
-					</div>
-				</div>
-				<div className="card">
-					<div className="card-body">
-						<h6 className="card-title">
-							손배배상청구의소 [서울고등법원
-							2020.5.28.,선고,2018나2068927,판결:상고]
-						</h6>
-						<p className="card-text">
-							With supporting text below as a natural lead-in to additional
-							content.
-						</p>
-					</div>
-				</div>
-				<div className="card">
-					<div className="card-body">
-						<h6 className="card-title">
-							손배배상청구의소 [서울고등법원
-							2020.5.28.,선고,2018나2068927,판결:상고]
-						</h6>
-						<p className="card-text">
-							With supporting text below as a natural lead-in to additional
-							content.
-						</p>
-					</div>
-				</div>
-				<div className="card">
-					<div className="card-body">
-						<h6 className="card-title">
-							손배배상청구의소 [서울고등법원
-							2020.5.28.,선고,2018나2068927,판결:상고]
-						</h6>
-						<p className="card-text">
-							With supporting text below as a natural lead-in to additional
-							content.
-						</p>
-					</div>
-				</div>
-				<div className="card">
-					<div className="card-body">
-						<h6 className="card-title">
-							손배배상청구의소 [서울고등법원
-							2020.5.28.,선고,2018나2068927,판결:상고]
-						</h6>
-						<p className="card-text">
-							With supporting text below as a natural lead-in to additional
-							content.
-						</p>
-					</div>
-				</div>
+				<Prec
+					title="손배배상청구의소 [서울고등법원
+							2020.5.28.,선고,2018나2068927,판결:상고]"
+					content="With supporting text below as a natural lead-in to additional
+							content."
+				/>
+				<Prec title="hello" content="world" />
+				<Prec title="hello" content="world" />
+				<Prec title="hello" content="world" />
+				<Prec title="hello" content="world" />
 
 				{/*<div style={{marginTop: "20px"}}>*/}
 				{/*    {comments.map((comment) => (*/}
