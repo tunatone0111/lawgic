@@ -1,26 +1,36 @@
-import { Types } from 'mongoose';
 import { Document } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Issue } from '../../issues/schemas/issue.schema';
 
 export type PrecDocument = Prec & Document;
 
 @Schema()
 export class Prec {
-  @Prop({ type: [Types.ObjectId], ref: Issue.name })
-  Issues: Issue[];
+  @Prop({ required: true })
+  title: String;
 
   @Prop({ required: true })
   date: Date;
 
-  @Prop()
-  refClauses: String[];
+  @Prop({ required: true })
+  caseNum: String;
 
-  @Prop({ type: [Types.ObjectId], ref: Prec.name })
-  refPrecs: Prec[];
+  @Prop()
+  order: Number;
+
+  @Prop()
+  issues: string[];
+
+  @Prop()
+  refClauses: String[][];
+
+  @Prop()
+  refPrecs: string[][];
 
   @Prop({ required: true })
   wholePrec: String;
+
+  @Prop()
+  judge: String;
 }
 
 export const PrecSchema = SchemaFactory.createForClass(Prec);
