@@ -25,6 +25,6 @@ def create_app(config_name='prod'):
         sim_tab = [(issue['prec'], cos_sim(embedded_q, issue['vector']))
                    for issue in db.read_issues({}, {'vector': 1, 'prec': 1})[:10000]]
         sim_tab = np.array(sorted(sim_tab, key=lambda e: e[1], reverse=True))
-        return {'ids': list(sim_tab[:, 0].astype(str))}
+        return {'ids': list(sim_tab[:, 0].astype(str))[:100]}
 
     return app
