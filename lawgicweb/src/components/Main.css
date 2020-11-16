@@ -1,0 +1,33 @@
+* {
+  font-family: "Do Hyeon", sans-serif;
+}
+
+.wrap {
+  width: 300px;
+  margin: 100px auto 0px auto;
+}
+
+.logo {
+  /*background-color: green;*/
+  width: 300px;
+  height: 200px;
+
+  background-image: url(../assets/logo.PNG);
+  background-size: cover;
+  background-position: center;
+}
+
+.input-group {
+  width: 800px;
+  margin: auto;
+  margin-top: 30px;
+}
+
+.input-group-text {
+  font-weight: bold;
+}
+
+.subtitle {
+  color: black;
+  margin: 0px 0px 0px 65px;
+}
