@@ -9,6 +9,7 @@ import { UsersModule } from './users/users.module';
 
 import { PrecsModule } from './precs/precs.module';
 import { IssuesModule } from './issues/issues.module';
+import { EmbedModule } from './embed/embed.module';
 import configuration from './config/configuration';
 
 const dbInfo = configuration().database;
@@ -20,6 +21,7 @@ const dbInfo = configuration().database;
     UsersModule,
     PrecsModule,
     IssuesModule,
+    EmbedModule,
   ],
   controllers: [AppController],
   providers: [AppService],

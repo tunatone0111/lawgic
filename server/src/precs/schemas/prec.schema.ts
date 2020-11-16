@@ -3,7 +3,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 export type PrecDocument = Prec & Document;
 
-@Schema()
+@Schema({ collection: 'Precs' })
 export class Prec {
   @Prop({ required: true })
   title: String;
