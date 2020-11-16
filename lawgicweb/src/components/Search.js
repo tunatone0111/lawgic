@@ -18,13 +18,14 @@ function Search() {
 	}
 
 	useEffect(() => {
-		// fetch("https://jsonplaceholder.typicode.com/posts/1/comments")
-		// 	.then((response) => response.json())
-		// 	.then((response) => {
-		// 		console.log(response);
-		// 		setComments(response);
-		// 	});
-		fetch(`http://localhost:4000/api/embed?q=${query.get("query")}`)
+		fetch("https://jsonplaceholder.typicode.com/posts/1/comments")
+			.then((response) => response.json())
+			.then((response) => {
+				console.log(response);
+				setComments(response);
+			});
+
+		fetch(encodeURI(`http://localhost:4000/api/embed?q=${query.get("query")}`))
 			.then((res) => res.json())
 			.then((res) => {
 				console.log(res);
@@ -52,7 +53,7 @@ function Search() {
 			</div>
 
 			<div style={{ marginTop: "20px" }}>
-				{/* <Prec
+				<Prec
 					title="손배배상청구의소 [서울고등법원
 							2020.5.28.,선고,2018나2068927,판결:상고]"
 					content="With supporting text below as a natural lead-in to additional
@@ -61,16 +62,16 @@ function Search() {
 				<Prec title="hello" content="world" />
 				<Prec title="hello" content="world" />
 				<Prec title="hello" content="world" />
-				<Prec title="hello" content="world" /> */}
+				<Prec title="hello" content="world" />
 				{precs.map((prec) => (
 					<Prec title={prec.caseNum} content={prec.title} />
 				))}
 
-				{/* <div style={{ marginTop: "20px" }}>
+				<div style={{ marginTop: "20px" }}>
 					{comments.map((comment) => (
 						<Prec title={comment.email} content={comment.body} />
 					))}
-				</div> */}
+				</div>
 			</div>
 
 			<nav aria-label="Page navigation example">
