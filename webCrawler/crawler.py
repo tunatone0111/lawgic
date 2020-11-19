@@ -102,7 +102,7 @@ if __name__ == '__main__':
 
         pool = Pool()
         precs = process_map(work, ids, chunksize=100,
-                            max_workers=4, desc="precs")
+                            max_workers=8, desc="precs")
         pool.close()
         pool.join()
 
