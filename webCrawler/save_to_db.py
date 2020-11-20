@@ -1,5 +1,4 @@
 from pymongo import MongoClient
-from collections import namedtuple
 import json
 from tqdm import trange
 
@@ -22,6 +21,6 @@ for i in trange(1, 9+1):
                 issues_model.insert_one({
                     "text": issue,
                     "vector": None,
-                    "prec": prec_id,
+                    "prec": prec['caseNum'],
                     "refPrecs": refPrecs if refPrecs is not None and any(refPrecs) else None
                 })

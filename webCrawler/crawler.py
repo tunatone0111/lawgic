@@ -101,7 +101,7 @@ if __name__ == '__main__':
         ids = [anchor["onclick"].split("'")[1] for anchor in anchors]
 
         pool = Pool()
-        precs = process_map(work, ids, chunksize=100,
+        precs = process_map(work, ids, chunksize=1,
                             max_workers=8, desc="precs")
         pool.close()
         pool.join()
