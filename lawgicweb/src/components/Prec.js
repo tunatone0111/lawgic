@@ -4,8 +4,13 @@ function Prec(props) {
 	return (
 		<div className="card">
 			<div className="card-body">
-				<h6 className="card-title">{props.title}</h6>
-				<p className="card-text">{props.content}</p>
+				<div className="card-title">
+					<h5>{props.title}</h5>
+					<span>{props.caseNum}</span>
+				</div>
+				{props.issues.map((i, idx) => (
+					<p className="card-text">{`[${idx + 1}] ${i}`}</p>
+				))}
 			</div>
 		</div>
 	);
