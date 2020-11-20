@@ -1,6 +1,6 @@
 import "./Search.css";
 import Logo from "../assets/logo.PNG";
-import { useLocation } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Prec from "./Prec";
 
@@ -8,30 +8,26 @@ function Search() {
 	const location = useLocation();
 	const query = new URLSearchParams(location.search);
 	const [content, setContent] = useState(query.get("query"));
-	const [comments, setComments] = useState([]);
 	const [precs, setPrecs] = useState([]);
-
-	console.log(query.get("query"));
-
+	const history = useHistory();
+	const [loading, setLoading] = useState(true);
 	function handleOnChange(event) {
 		setContent(event.target.value);
 	}
 
-	useEffect(() => {
-		fetch("https://jsonplaceholder.typicode.com/posts/1/comments")
-			.then((response) => response.json())
-			.then((response) => {
-				console.log(response);
-				setComments(response);
-			});
+	function handleOnClick() {
+		history.push(`/search?query=${content}`);
+	}
 
+	useEffect(() => {
 		fetch(encodeURI(`http://localhost:4000/api/embed?q=${query.get("query")}`))
 			.then((res) => res.json())
 			.then((res) => {
-				console.log(res);
 				setPrecs(res);
+				setLoading(false);
 			});
 	}, []);
+	if (loading) return <div>loading...</div>;
 
 	return (
 		<div className="top">
@@ -48,7 +44,11 @@ function Search() {
 					aria-label="With textarea"
 				></textarea>
 				<div className="input-group-append">
-					<button className="btn btn-outline-secondary" type="button">
+					<button
+						className="btn btn-outline-secondary"
+						type="button"
+						onClick={handleOnClick}
+					>
 						검색
 					</button>
 				</div>
@@ -56,13 +56,8 @@ function Search() {
 
 			<div style={{ marginTop: "20px" }}></div>
 			{precs.map((prec) => (
-				<Prec title={prec.caseNum} content={prec.title} />
+				<Prec caseNum={prec.caseNum} title={prec.title} issues={prec.issues} />
 			))}
-
-			{/* <div style={{ marginTop: "20px" }}></div>
-			{comments.map((comment) => (
-				<Prec title={comment.email} content={comment.body} />
-			))} */}
 
 			<nav aria-label="Page navigation example">
 				<ul className="pagination">
