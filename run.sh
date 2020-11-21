@@ -1,4 +1,5 @@
 #!/bin/bash
-pwd
-. ./bert-server/venv/bin/activate
-python3 manage.py run &
+python3 bert-server/manage.py run &
+cd server && npm run start:dev &
+cd ../lawgicWeb && npm run &
+echo Server Started...
