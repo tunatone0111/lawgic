@@ -1,25 +1,39 @@
 from db import DataBase
 from tqdm.contrib.concurrent import process_map
 from tqdm import tqdm
-from multiprocessing import Pool
 import numpy as np
 import matplotlib.pyplot as plt
-from itertools import repeat
 
 db = DataBase()
 
-MAX = 20
+MAX = 10000
+
+comp_vectors = []
+comp_precs = []
+for x in tqdm(db.issues.find(projection={"vector": True, 'prec': True}), desc='loading issues'):
+    comp_vectors.append(np.array(x['vector']) / np.linalg.norm(x['vector']))
+    comp_precs.append(x['prec'])
+comp_vectors = np.array(comp_vectors)
 
 
-def cos_sim(a, b):
-    cosine = np.dot(a, b)/(np.linalg.norm(a)*np.linalg.norm(b))
-    return np.square(cosine)
+def get_rank(test_issue):
+    test_vector = np.array(test_issue['vector']).reshape(-1, 1) / \
+        np.linalg.norm(test_issue['vector'])
 
+    sim_tab = np.matmul(comp_vectors, test_vector) ** 2
+    sim_tab_sorted_idxs = sim_tab.reshape(-1).argsort()[::-1]
 
-result = []
-i2s = []
-for i2 in tqdm(db.db['issuePprec'].find()[:20000], desc='load db'):
-    i2s.append(i2)
+    ranks = []
+    for ref_prec in test_issue['refPrecs']:
+        try:
+            idx = comp_precs.index(ref_prec)
+            rank = np.where(sim_tab_sorted_idxs == idx)[0][0]
+            ranks.append(rank)
+        except:
+            pass
+
+    return (np.min(ranks) if any(ranks) else -1)
+
 
 pipeline = [
     {'$match': {'refPrecs': {'$ne': None}}},
@@ -27,25 +41,10 @@ pipeline = [
     {'$sample': {'size': MAX}}
 ]
 
-for issue in tqdm(db.db['Issues'].aggregate(pipeline), total=MAX):
-    def work(i2):
-        return (i2['pprec'], cos_sim(issue['vector'], i2['vector']))
-
-    pool = Pool()
-    sim_tab = list(pool.map(work, i2s))
-    pool.close()
-    pool.join()
-    # sim_tab = [work_f(issue['vector'])(i2) for i2 in i2s]
-
-    sim_tab = np.array(sorted(sim_tab, key=lambda e: e[1], reverse=True))
-    for r in issue['refPrecs']:
-        idxs = np.where(sim_tab[:, 0] == r)[0]
-        if any(idxs):
-            result.append(idxs[0])
-
-np.save('result.npy', np.array(result))
+result = process_map(get_rank, list(
+    db.issues.aggregate(pipeline)), max_workers=8, chunksize=1)
 
 plt.figure(figsize=(16, 12))
 plt.hist(result, bins=100)
 plt.show()
-plt.savefig('a.png', dpi=300)
+plt.savefig('tmp.png', dpi=300)

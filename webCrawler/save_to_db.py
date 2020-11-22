@@ -1,8 +1,12 @@
 from pymongo import MongoClient
 import json
 from tqdm import trange
+import config
 
-connection = MongoClient('localhost', 27017)
+connection = MongoClient('localhost', 27017,
+                        username='lawgic', 
+                        password=config.db_pwd,
+                        authSource='admin')
 db = connection['lawgic']
 
 for i in trange(1, 9+1):
@@ -14,7 +18,7 @@ for i in trange(1, 9+1):
     issues_model = db['Issues']
 
     for prec in precs:
-        prec_id = precs_model.insert_one(prec).inserted_id
+        precs_model.insert_one(prec)
         if 'issues' in prec and prec['issues'] is not None:
             for idx, issue in enumerate(prec['issues']):
                 refPrecs = prec['refPrecs'][idx] if 'refPrecs' in prec else None

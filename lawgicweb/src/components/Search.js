@@ -23,6 +23,7 @@ function Search() {
 		fetch(encodeURI(`http://localhost:4000/api/embed?q=${query.get("query")}`))
 			.then((res) => res.json())
 			.then((res) => {
+				console.log(res);
 				setPrecs(res);
 				setLoading(false);
 			});
@@ -56,7 +57,11 @@ function Search() {
 
 			<div style={{ marginTop: "20px" }}></div>
 			{precs.map((prec) => (
-				<Prec caseNum={prec.caseNum} title={prec.title} issues={prec.issues} />
+				<Prec
+					caseNum={prec[0].caseNum}
+					title={prec[0].title}
+					issues={prec[0].issues}
+				/>
 			))}
 
 			<nav aria-label="Page navigation example">

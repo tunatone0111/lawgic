@@ -13,10 +13,13 @@ import { EmbedModule } from './embed/embed.module';
 import configuration from './config/configuration';
 
 const dbInfo = configuration().database;
+console.log(dbInfo);
 
 @Module({
   imports: [
-    MongooseModule.forRoot(`mongodb://${dbInfo.host}:${dbInfo.port}/lawgic`),
+    MongooseModule.forRoot(
+      `mongodb://${dbInfo.user}:${dbInfo.pwd}@${dbInfo.host}:${dbInfo.port}/lawgic?authSource=admin`,
+    ),
     ConfigModule.forRoot({ load: [configuration] }),
     UsersModule,
     PrecsModule,
