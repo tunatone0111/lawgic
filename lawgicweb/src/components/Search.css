@@ -1,6 +1,7 @@
 .card {
 	width: 1300px;
 	margin: auto;
+	cursor: pointer;
 }
 
 .pagination {

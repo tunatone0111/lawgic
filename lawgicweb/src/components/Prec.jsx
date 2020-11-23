@@ -1,11 +1,11 @@
 import React from "react";
-import {useHistory} from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 function Prec(props) {
 	const history = useHistory();
 
 	return (
-		<div className="card" onClick={() => history.push('/precs/' + props.caseNum)} >
+		<div className="card" onClick={() => history.push("/precs/" + props.id)}>
 			<div className="card-body">
 				<div className="card-title">
 					<h5>{props.title}</h5>
