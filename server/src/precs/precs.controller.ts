@@ -7,7 +7,7 @@ export class PrecsController {
 
   @Get()
   async getAll() {
-    return await this.precsService.findAll();
+    return await this.precsService.findAll({}, { caseNum: true });
   }
 
   @Get('/:id')
