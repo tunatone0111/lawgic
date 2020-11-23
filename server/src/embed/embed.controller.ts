@@ -10,10 +10,10 @@ export class EmbedController {
   async embed(@Query('q') q: string) {
     let res = await fetch(encodeURI(`http://localhost:5000/?q=${q}`));
     res = await res.json();
-    let data = res.data.slice(0, 10);
-    console.log(data);
     return await Promise.all(
-      data.map(caseNum => this.precsService.findAll({ caseNum: caseNum })),
+      res.precs.map(caseNum =>
+        this.precsService.findOne({ caseNum: caseNum }, ['title']),
+      ),
     );
   }
 }

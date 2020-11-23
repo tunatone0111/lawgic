@@ -17,7 +17,7 @@ tfidf_comparator = TfidfComparator()
 #     test_vector = np.array(test_issue['vector']).reshape(-1, 1) / \
 #         np.linalg.norm(test_issue['vector'])
 
-#     sim_precs, idxs = bert_comparator.get_sim_precs_with_idxs(test_vector)
+#     sim_precs, idxs = bert_comparator.get_sim_precs(test_vector)
 
 #     ranks = []
 #     for ref_prec in test_issue['refPrecs']:
@@ -31,7 +31,7 @@ tfidf_comparator = TfidfComparator()
 
 
 def get_rank_tfidf(test_issue):
-    sim_precs, idxs = tfidf_comparator.get_sim_precs_with_idxs(
+    sim_precs, idxs = tfidf_comparator.get_sim_precs(
         test_issue['text'])
 
     ranks = []

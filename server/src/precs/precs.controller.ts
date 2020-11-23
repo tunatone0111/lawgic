@@ -12,6 +12,6 @@ export class PrecsController {
 
   @Get('/:id')
   async getOne(@Param('id') id: string) {
-    return await this.precsService.findOne(id);
+    return await this.precsService.findOneById(id);
   }
 }

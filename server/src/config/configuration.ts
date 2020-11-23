@@ -1,3 +1,8 @@
+if (process.env.LAWGIC_DB_PWD === undefined) {
+  console.error('FATAL: Please set LAWGIC_DB_PWD');
+  process.exit();
+}
+
 export default () => ({
   name: 'LAWGIC',
   jwtkey: 'THISISSECRETKEY',
