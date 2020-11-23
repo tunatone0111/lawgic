@@ -18,6 +18,17 @@ function Main() {
 		history.push("/search?query=" + textAreaContent);
 	}
 
+	/*function openclose() {
+            let status = $('#').css('display');
+            if (status == '') {
+                $('#').hide()
+                $('#').text('로그인 창 열기')
+            } else {
+                $('#').show()
+                $('#').text('로그인 창 닫기')
+            }
+        }*/
+
 	return (
 		<>
 			<div
@@ -28,6 +39,7 @@ function Main() {
 				}}
 			>
 				<button className="btn btn-outline-secondary">로그인하기</button>
+
 			</div>
 			<div className="wrap">
 				<div className="logo"></div>

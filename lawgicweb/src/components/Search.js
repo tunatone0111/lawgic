@@ -20,6 +20,7 @@ function Search() {
 	}
 
 	useEffect(() => {
+<<<<<<< HEAD
 		fetch(encodeURI(`http://localhost:4000/api/embed?q=${query.get("query")}`))
 			.then((res) => res.json())
 			.then((res) => {
@@ -27,8 +28,30 @@ function Search() {
 				setPrecs(res);
 				setLoading(false);
 			});
+=======
+		setPrecs([
+			{
+				caseNum: 1,
+				title: "abc",
+				issues: ["foo", "bar", "hello"],
+			},
+			{
+				caseNum: 2,
+				title: "abcde",
+				issues: ["foos", "bars", "hellos"],
+			}
+		]);
+
+
+		// fetch(encodeURI(`http://localhost:4000/api/embed?q=${query.get("query")}`))
+		// 	.then((res) => res.json())
+		// 	.then((res) => {
+		// 		setPrecs(res);
+		// 		setLoading(false);
+		// 	});
+>>>>>>> f50d269dc6ec2198c0f92a6050bd57bf895514d4
 	}, []);
-	if (loading) return <div>loading...</div>;
+	//if (loading) return <div>loading...</div>;
 
 	return (
 		<div className="top">
@@ -57,11 +80,15 @@ function Search() {
 
 			<div style={{ marginTop: "20px" }}></div>
 			{precs.map((prec) => (
+<<<<<<< HEAD
 				<Prec
 					caseNum={prec[0].caseNum}
 					title={prec[0].title}
 					issues={prec[0].issues}
 				/>
+=======
+				<Prec key={prec.caseNum} caseNum={prec.caseNum} title={prec.title} issues={prec.issues} onClick={() => history.push('/precs/${prec.caseNum}')}/>
+>>>>>>> f50d269dc6ec2198c0f92a6050bd57bf895514d4
 			))}
 
 			<nav aria-label="Page navigation example">
