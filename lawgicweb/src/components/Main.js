@@ -43,7 +43,7 @@ function Main() {
 			<div className="wrap">
 				<div className="logo"></div>
 				<div className="subtitle">
-					<h6> 딥러닝 기반 판례 검색 시스템</h6>
+					<h6>머신러닝 기반 판례 검색 시스템</h6>
 				</div>
 			</div>
 			<div className="input-group">

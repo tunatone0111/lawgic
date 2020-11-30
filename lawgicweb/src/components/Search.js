@@ -12,22 +12,25 @@ function Search() {
 	const [precs, setPrecs] = useState([]);
 	const history = useHistory();
 	const [loading, setLoading] = useState(true);
+	const q = query.get("query");
+
 	function handleOnChange(event) {
 		setContent(event.target.value);
 	}
 
 	function handleOnClick() {
 		history.push(`/search?query=${content}`);
+		//Search();
 	}
 
 	useEffect(() => {
-		fetch(encodeURI(`http://34.64.113.234:4000/api/embed?q=${query.get("query")}`))
+		fetch(encodeURI(`http://34.64.113.234:4000/api/embed?q=${q}`))
 			.then((res) => res.json())
 			.then((res) => {
 				setPrecs(res);
 				setLoading(false);
 			});
-	}, []);
+	}, [q]);
 	if (loading) return <div>loading...</div>;
 
 	return (
