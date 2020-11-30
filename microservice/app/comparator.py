@@ -66,7 +66,7 @@ class TfidfComparator(Comparator):
                                    axis=1)
 
         sim_precs = sim_precs[np.where(
-            sim_precs[:, 1].astype(np.float32) > 0)].tolist()
+            sim_precs[:, 1].astype(np.float32) > 0.5)].tolist()
 
         return sim_precs
 

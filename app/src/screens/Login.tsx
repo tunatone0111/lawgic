@@ -1,5 +1,4 @@
 import React from 'react'
-import { StatusBar } from 'expo-status-bar';
 import { View, Text, StyleSheet, Image, Button } from 'react-native'
 import { AuthNavProps } from '../Routes';
 
@@ -8,7 +7,6 @@ export default function Landing({navigation, route}: AuthNavProps<'Landing'>) {
     <View style={styles.container}>
       <Image style={styles.tinyLogo} source={require('../assets/logo.PNG')}/>
       <Text>로그인 페이지</Text>
-      <StatusBar style="auto" />
     </View>
   )
 }

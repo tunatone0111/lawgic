@@ -8,16 +8,22 @@ export class EmbedController {
 
   @Get()
   async embed(@Query('q') q: string) {
+    console.log(`query: ${q}`);
     let res = await fetch(encodeURI(`http://localhost:5000/?q=${q}`));
     res = await res.json();
-    const data =  await Promise.all(
-      res.precs.slice(0, 20).map(
-        async ([caseNum, sim]) =>
-          await this.precsService.findOne(
-            { caseNum: caseNum },
-            { _id: 1, title: 1, caseNum: 1, issues: 1 },
-          ),
-      ),
+    const data = await Promise.all(
+      res.precs.map(async ([caseNum, sim]) => {
+        const { _id, title, issues } = await this.precsService.findOne(
+          { caseNum: caseNum },
+          { _id: 1, title: 1, issues: 1 },
+        );
+        return {
+          _id: _id,
+          title: title,
+          issues: issues,
+          sim: sim,
+        };
+      }),
     );
     return data;
   }

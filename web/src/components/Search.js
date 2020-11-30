@@ -24,7 +24,7 @@ function Search() {
 	}
 
 	useEffect(() => {
-		fetch(encodeURI(`http://34.64.113.234:4000/api/embed?q=${q}`))
+		fetch(encodeURI(`http://34.64.175.123:4000/api/embed?q=${q}`))
 			.then((res) => res.json())
 			.then((res) => {
 				setPrecs(res);

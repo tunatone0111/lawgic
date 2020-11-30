@@ -1,10 +1,12 @@
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 export type PrecDocument = Prec & Document;
 
 @Schema({ collection: 'Precs' })
 export class Prec {
+  _id?: Types.ObjectId;
+
   @Prop({ required: true })
   title: String;
 
