@@ -19,7 +19,7 @@ export class PrecsService {
   }
 
   async findOneById(id: string): Promise<Prec> {
-    return await this.precModel.findOne({ _id: id }).exec();
+    return await this.precModel.findById(id).exec();
   }
 
   async findOne(filt: FilterQuery<Prec> = {}, sel): Promise<Prec> {

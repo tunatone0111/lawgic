@@ -32,7 +32,6 @@ export class EmbedController {
           };
         }),
       );
-      console.log(res.vector);
       this.precsService.createCacheItem({
         vector: res.vector,
         precs: data,
