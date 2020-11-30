@@ -10,6 +10,7 @@ import { UsersModule } from './users/users.module';
 import { PrecsModule } from './precs/precs.module';
 import { IssuesModule } from './issues/issues.module';
 import { EmbedModule } from './embed/embed.module';
+import { AuthModule } from './auth/auth.module';
 import configuration from './config/configuration';
 
 const dbInfo = configuration().database;
@@ -25,6 +26,7 @@ console.log(dbInfo);
     PrecsModule,
     IssuesModule,
     EmbedModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
