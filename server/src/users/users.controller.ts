@@ -1,24 +1,27 @@
 import { Controller, Delete, Get, Post, Put } from '@nestjs/common';
+import { UsersService } from './users.service';
 
 @Controller('api/users')
 export class UsersController {
-    @Get()
-    getUsers(): string {
-        return 'this will return all users';
-    }
+  constructor(private usersService: UsersService) {}
 
-    @Post()
-    postUsers(): string {
-        return 'this will post users';
-    }
+  @Get()
+  getUsers(): string {
+    return 'this will return all users';
+  }
 
-    @Put()
-    putUsers(): string {
-        return 'this will put users';
-    }
+  @Post()
+  postUsers(): string {
+    return 'this will post users';
+  }
 
-    @Delete()
-    deleteUsers(): string {
-        return 'this will delete users';
-    }
+  @Put()
+  putUsers(): string {
+    return 'this will put users';
+  }
+
+  @Delete()
+  deleteUsers(): string {
+    return 'this will delete users';
+  }
 }
