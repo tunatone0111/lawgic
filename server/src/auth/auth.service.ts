@@ -7,6 +7,7 @@ export class AuthService {
   constructor(private usersService: UsersService) {}
 
   async validateUser(username: string, pass: string): Promise<Partial<User>> {
+    console.log(username, pass);
     const user = await this.usersService.readOne(username);
     if (user && user.password === pass) {
       return {
