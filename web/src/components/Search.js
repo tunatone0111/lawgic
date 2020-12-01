@@ -11,6 +11,7 @@ function Search() {
 	const query = new URLSearchParams(location.search);
 	const [content, setContent] = useState(query.get("query"));
 	const [precs, setPrecs] = useState([]);
+	const [eTime, setETime] = useState(0);
 	const history = useHistory();
 	const [loading, setLoading] = useState(true);
 	const q = query.get("query");
@@ -25,9 +26,11 @@ function Search() {
 	}
 
 	useEffect(() => {
+		const sTime = new Date().getTime();
 		fetch(encodeURI(`http://34.64.175.123:4000/api/embed?q=${q}`))
 			.then((res) => res.json())
 			.then((res) => {
+				setETime(new Date().getTime() - sTime);
 				setPrecs(res);
 				setLoading(false);
 			});
@@ -66,6 +69,7 @@ function Search() {
 			<div style={{ marginTop: "20px" }}></div>
 			<div className="card border-light mb-3">
 				<h4>검색결과: {precs.length} 건</h4>
+				<p>(소요시간: {eTime}ms)</p>
 			</div>
 			{precs.map((prec) => (
 				<Prec
