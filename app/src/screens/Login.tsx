@@ -86,7 +86,7 @@ export default function Login({ navigation, route }: AuthNavProps<"Login">) {
 			<Button
 				containerStyle={{alignSelf: 'stretch'}}
 				title="회원가입"
-        onPress={()=>alert('WIP')}
+        onPress={()=>navigation.navigate('Register')}
         type='clear'
 			/>
 		</View>
