@@ -1,4 +1,5 @@
 import React from "react";
+import { Card } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 
 function Prec(props) {
@@ -14,21 +15,18 @@ function Prec(props) {
 		}
 	}
 	return (
-		<div
-			className="card mb-2 shadow p-1 hoverable"
+		<Card
+			className="mb-2 shadow-sm p-1 hoverable"
 			style={{ backgroundColor: simcolor(props) }}
 			onClick={() => history.push("/precs/" + props.id)}
 		>
-			<div className="card-body">
-				<div className="card-title">
-					<h5>{props.title}</h5>
-					<span>{props.caseNum}</span>
-				</div>
+			<Card.Body>
+				<Card.Title>{props.title}</Card.Title>
 				{props.issues.map((i, idx) => (
-					<p className="card-text" key={idx}>{`[${idx + 1}] ${i}`}</p>
+					<Card.Text key={idx}>{`[${idx + 1}] ${i}`}</Card.Text>
 				))}
-			</div>
-		</div>
+			</Card.Body>
+		</Card>
 	);
 }
 

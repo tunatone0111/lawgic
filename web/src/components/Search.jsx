@@ -2,18 +2,15 @@ import "./Search.css";
 import Logo from "../assets/logo.PNG";
 import { useHistory, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { Spinner } from "react-bootstrap";
+import { Spinner, Container, Row, Col } from "react-bootstrap";
 import Prec from "./Prec";
-import Pagination from "./Pagination";
+import useFetch from "../services/useFetch";
 
 function Search() {
 	const location = useLocation();
 	const query = new URLSearchParams(location.search);
 	const [content, setContent] = useState(query.get("query"));
-	const [precs, setPrecs] = useState([]);
-	const [eTime, setETime] = useState(0);
 	const history = useHistory();
-	const [loading, setLoading] = useState(true);
 	const q = query.get("query");
 
 	function handleOnChange(event) {
@@ -25,17 +22,9 @@ function Search() {
 		//Search();
 	}
 
-	useEffect(() => {
-		const sTime = new Date().getTime();
-		fetch(encodeURI(`http://34.64.175.123:4000/api/embed?q=${q}`))
-			.then((res) => res.json())
-			.then((res) => {
-				setETime(new Date().getTime() - sTime);
-				setPrecs(res);
-				setLoading(false);
-			});
-	}, [q]);
-	if (loading) return <Spinner animation="border" />;
+	const { data: precs, loading, eTime } = useFetch(
+		encodeURI(`http://34.64.175.123:4000/api/embed?q=${q}`)
+	);
 
 	return (
 		<div className="top">
@@ -62,26 +51,30 @@ function Search() {
 					</button>
 				</div>
 			</div>
-			<Spinner animation="border" role="status">
-				<span className="sr-only">Loading...</span>
-			</Spinner>
 
-			<div style={{ marginTop: "20px" }}></div>
-			<div className="card border-light mb-3">
-				<h4>검색결과: {precs.length} 건</h4>
-				<p>(소요시간: {eTime}ms)</p>
-			</div>
-			{precs.map((prec) => (
-				<Prec
-					id={prec._id}
-					caseNum={prec.caseNum}
-					title={prec.title}
-					issues={prec.issues}
-					sim={prec.sim}
-				/>
-			))}
-
-			<Pagination />
+			{!precs ? (
+				<div className="d-flex flex-row justify-content-center mt-5">
+					<Spinner animation="border" variant="warning" />
+				</div>
+			) : (
+				<>
+					<div style={{ marginTop: "20px" }}></div>
+					<div className="card border-light mb-3">
+						<h4>검색결과: {precs.length} 건</h4>
+						<p>(소요시간: {eTime}ms)</p>
+					</div>
+					{precs.map((prec) => (
+						<Prec
+							key={prec._id}
+							id={prec._id}
+							caseNum={prec.caseNum}
+							title={prec.title}
+							issues={prec.issues}
+							sim={prec.sim}
+						/>
+					))}
+				</>
+			)}
 		</div>
 	);
 }
