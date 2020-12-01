@@ -5,19 +5,21 @@ function Prec(props) {
 	const history = useHistory();
 
 	function simcolor(props) {
-		if(props.sim >= 0.7) {
-			return ("lemonchiffon")
-		}
-		else if(props.sim >= 0.55) {
-			return ("lightgoldenrodyellow")
-		}
-		else {
-			return ("beige")
+		if (props.sim >= 0.7) {
+			return "lemonchiffon";
+		} else if (props.sim >= 0.55) {
+			return "lightgoldenrodyellow";
+		} else {
+			return "beige";
 		}
 	}
-		return (
-		<div className="card" onClick={() => history.push("/precs/" + props.id)}>
-			<div className="card-body" style={{backgroundColor: simcolor(props)}}>
+	return (
+		<div
+			className="card mb-2 shadow p-1 hoverable"
+			style={{ backgroundColor: simcolor(props) }}
+			onClick={() => history.push("/precs/" + props.id)}
+		>
+			<div className="card-body">
 				<div className="card-title">
 					<h5>{props.title}</h5>
 					<span>{props.caseNum}</span>

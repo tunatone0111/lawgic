@@ -2,6 +2,7 @@ import "./Search.css";
 import Logo from "../assets/logo.PNG";
 import { useHistory, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { Spinner } from "react-bootstrap";
 import Prec from "./Prec";
 import Pagination from "./Pagination";
 
@@ -31,7 +32,7 @@ function Search() {
 				setLoading(false);
 			});
 	}, [q]);
-	if (loading) return <div>loading...</div>;
+	if (loading) return <Spinner animation="border" />;
 
 	return (
 		<div className="top">
@@ -58,8 +59,14 @@ function Search() {
 					</button>
 				</div>
 			</div>
+			<Spinner animation="border" role="status">
+				<span className="sr-only">Loading...</span>
+			</Spinner>
 
 			<div style={{ marginTop: "20px" }}></div>
+			<div className="card border-light mb-3">
+				<h4>검색결과: {precs.length} 건</h4>
+			</div>
 			{precs.map((prec) => (
 				<Prec
 					id={prec._id}
