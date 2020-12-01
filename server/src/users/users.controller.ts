@@ -1,24 +1,29 @@
-import { Controller, Delete, Get, Post, Put } from '@nestjs/common';
+import { CreateUserDto } from './dto/create-user.dto';
+import { Body, Controller, Delete, Get, Post, Put } from '@nestjs/common';
+import { UsersService } from './users.service';
+import { User } from './schemas/user.schema';
 
 @Controller('api/users')
 export class UsersController {
-    @Get()
-    getUsers(): string {
-        return 'this will return all users';
-    }
+  constructor(private usersService: UsersService) {}
 
-    @Post()
-    postUsers(): string {
-        return 'this will post users';
-    }
+  @Get('/me')
+  getUsers(): string {
+    return 'return my info';
+  }
 
-    @Put()
-    putUsers(): string {
-        return 'this will put users';
-    }
+  @Post('/register')
+  async register(@Body() newUser: CreateUserDto): Promise<User> {
+    return this.usersService.createOne(newUser);
+  }
 
-    @Delete()
-    deleteUsers(): string {
-        return 'this will delete users';
-    }
+  @Put()
+  putUsers(): string {
+    return 'this will put users';
+  }
+
+  @Delete()
+  deleteUsers(): string {
+    return 'this will delete users';
+  }
 }

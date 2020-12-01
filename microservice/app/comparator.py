@@ -68,7 +68,35 @@ class TfidfComparator(Comparator):
         sim_precs = sim_precs[np.where(
             sim_precs[:, 1].astype(np.float32) > 0.5)].tolist()
 
-        return sim_precs
+        print(target_vector)
+        print(target_vector.tolist())
+
+        return target_vector.tolist(), sim_precs
+
+    def find_for_cache(self, target_string):
+        target_nouns = ' '.join(self.mecab.nouns(target_string))
+        target_vector = self.tfidf_vectorizer.transform(
+            [target_nouns]).toarray()
+
+        cache_ids = []
+        tfidf_vectors = []
+        for x in self.db.cache.find(projection={'vector': True}):
+            tfidf_vectors.append(x['vector'])
+            cache_ids.append(x['_id'])
+        if not any(cache_ids):
+            return False, None
+        cache_ids = np.array(cache_ids)
+        tfidf_vectors = np.array(tfidf_vectors)
+
+        sim_mat = np.matmul(tfidf_vectors, np.transpose(
+            target_vector)).reshape(-1)
+
+        max_idx = sim_mat.argsort()[-1]
+
+        if sim_mat[max_idx] >= 0.8:
+            return True, str(cache_ids[max_idx])
+        else:
+            return False, None
 
 
 if __name__ == '__main__':

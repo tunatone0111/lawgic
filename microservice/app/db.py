@@ -14,3 +14,4 @@ class DataBase():
         self.db = self.connection['lawgic']
         self.issues = self.db['Issues']
         self.precs = self.db['Precs']
+        self.cache = self.db['Cache']

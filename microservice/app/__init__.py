@@ -13,6 +13,14 @@ def create_app(config_name='prod'):
     @app.route('/')
     def get_precs():
         q = request.args.get('q')
-        return jsonify(precs=comparator.get_sim_precs(q))
+        vector = None
+        precs = None
+        is_cached, cached_id = comparator.find_for_cache(q)
+        if not is_cached:
+            vector, precs = comparator.get_sim_precs(q)
+        return jsonify(vector=vector,
+                       precs=precs,
+                       isCached=is_cached,
+                       cachedId=cached_id)
 
     return app
