@@ -4,9 +4,20 @@ import { useHistory } from "react-router-dom";
 function Prec(props) {
 	const history = useHistory();
 
-	return (
+	function simcolor(props) {
+		if(props.sim >= 0.7) {
+			return ("lemonchiffon")
+		}
+		else if(props.sim >= 0.55) {
+			return ("lightgoldenrodyellow")
+		}
+		else {
+			return ("beige")
+		}
+	}
+		return (
 		<div className="card" onClick={() => history.push("/precs/" + props.id)}>
-			<div className="card-body">
+			<div className="card-body" style={{backgroundColor: simcolor(props)}}>
 				<div className="card-title">
 					<h5>{props.title}</h5>
 					<span>{props.caseNum}</span>

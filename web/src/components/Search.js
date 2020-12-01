@@ -66,6 +66,7 @@ function Search() {
 					caseNum={prec.caseNum}
 					title={prec.title}
 					issues={prec.issues}
+					sim={prec.sim}
 				/>
 			))}
 

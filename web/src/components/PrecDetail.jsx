@@ -12,7 +12,7 @@ function PrecDetail() {
     const history = useHistory()
 
     useEffect(async () => {
-        let res = await fetch(`http://34.64.113.234:4000/api/precs/${id}`);
+        let res = await fetch(`http://34.64.175.123:4000/api/precs/${id}`);
         setResult(await res.json());
     }, []);
 
