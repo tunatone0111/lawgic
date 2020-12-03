@@ -3,8 +3,13 @@
 }
 
 .wrap {
+	display: inline-block;
 	width: 300px;
 	margin: 100px auto 0px auto;
+}
+
+.wrap:hover {
+	cursor: pointer;
 }
 
 .logo {

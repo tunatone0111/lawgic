@@ -1,5 +1,5 @@
 import React from "react";
-import { Card } from "react-bootstrap";
+import { Card, Row } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 
 function Prec(props) {
@@ -15,7 +15,7 @@ function Prec(props) {
 		}
 	}
 	return (
-		<Card
+		<Row
 			className="mb-2 shadow-sm p-1 hoverable"
 			style={{ backgroundColor: simcolor(props) }}
 			onClick={() => history.push("/precs/" + props.id)}
@@ -26,7 +26,7 @@ function Prec(props) {
 					<Card.Text key={idx}>{`[${idx + 1}] ${i}`}</Card.Text>
 				))}
 			</Card.Body>
-		</Card>
+		</Row>
 	);
 }
 

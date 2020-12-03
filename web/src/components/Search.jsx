@@ -2,7 +2,18 @@ import "./Search.css";
 import Logo from "../assets/logo.PNG";
 import { useHistory, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { Spinner, Container, Row, Col } from "react-bootstrap";
+import {
+	Spinner,
+	Container,
+	Row,
+	Col,
+	InputGroup,
+	FormControl,
+	Button,
+	Navbar,
+	Nav,
+	Form
+} from "react-bootstrap";
 import Prec from "./Prec";
 import useFetch from "../services/useFetch";
 
@@ -27,30 +38,28 @@ function Search() {
 	);
 
 	return (
-		<div className="top">
-			<div style={{ display: "flex", padding: "20px" }}>
-				<a href="/">
-					<img src={Logo} width="100px" style={{ marginRight: "20px" }} />
-				</a>
-				<input
-					type="text"
-					className="form-control"
-					style={{ borderRadius: "20px" }}
-					placeholder="사건을 입력하세요"
-					onChange={handleOnChange}
-					value={content}
-					aria-label="With textarea"
-				></input>
-				<div className="input-group-append">
-					<button
-						className="btn btn-outline-secondary"
-						type="button"
-						onClick={handleOnClick}
-					>
+		<Container>
+			<Row
+				as={Navbar}
+				className="justify-content-betweeen"
+				sticky="top"
+				bg="light"
+			>
+				<Navbar.Brand href="/">
+					<img src={Logo} width="100px" />
+				</Navbar.Brand>
+				<Form inline>
+					<FormControl
+						as="textarea"
+						placeholder="사건을 입력하세요"
+						value={content}
+						onChange={handleOnChange}
+					/>
+					<Button variant="secondary" onClick={handleOnClick}>
 						검색
-					</button>
-				</div>
-			</div>
+					</Button>
+				</Form>
+			</Row>
 
 			{!precs ? (
 				<div className="d-flex flex-row justify-content-center mt-5">
@@ -75,7 +84,7 @@ function Search() {
 					))}
 				</>
 			)}
-		</div>
+		</Container>
 	);
 }
 
