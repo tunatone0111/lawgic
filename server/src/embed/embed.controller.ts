@@ -1,6 +1,7 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import fetch from 'node-fetch';
 import { PrecsService } from 'src/precs/precs.service';
+import { CachedPrec } from 'src/precs/schemas/cachedItem.schema';
 
 @Controller('api/embed')
 export class EmbedController {
@@ -18,19 +19,24 @@ export class EmbedController {
       data = cachedItem.precs;
     } else {
       console.log('loading precs...');
-      data = await Promise.all(
-        res.precs.map(async ([caseNum, sim]) => {
-          const { _id, title, issues } = await this.precsService.findOne(
-            { caseNum: caseNum },
-            { _id: 1, title: 1, issues: 1 },
-          );
-          return {
-            _id: _id,
-            title: title,
-            issues: issues,
-            sim: sim,
-          };
-        }),
+      data = await Promise.all<CachedPrec>(
+        res.precs.map(
+          async ([caseNum, sim]): Promise<CachedPrec> => {
+            const resultPrec = await this.precsService.findOne(
+              { caseNum: caseNum },
+              {},
+            );
+            return {
+              precId: resultPrec._id.toHexString(),
+              date: resultPrec.date,
+              title: resultPrec.title,
+              issues: resultPrec.issues,
+              courtOrder: resultPrec.courtOrder,
+              isEnBanc: resultPrec.isEnBanc,
+              sim: sim,
+            };
+          },
+        ),
       );
       this.precsService.createCacheItem({
         vector: res.vector,

@@ -5,7 +5,8 @@ export type PrecDocument = Prec & Document;
 
 @Schema({ collection: 'Precs' })
 export class Prec {
-  _id?: Types.ObjectId;
+  @Prop({ required: true })
+  _id: Types.ObjectId;
 
   @Prop({ required: true })
   title: String;
@@ -17,10 +18,19 @@ export class Prec {
   caseNum: String;
 
   @Prop()
-  order: Number;
+  courtOrder: Number;
+
+  @Prop()
+  isEnBanc: Boolean;
 
   @Prop()
   issues: string[];
+
+  @Prop()
+  order: Number;
+
+  @Prop()
+  yo: String[];
 
   @Prop()
   refClauses: String[][];

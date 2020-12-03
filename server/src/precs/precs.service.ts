@@ -1,3 +1,4 @@
+import { CreateCacheItemDto } from './dto/create-cache-item.dto';
 import { CachedItem, CachedItemDocument } from './schemas/cachedItem.schema';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
@@ -33,7 +34,10 @@ export class PrecsService {
     return await this.cacheModel.findById(id).exec();
   }
 
-  async createCacheItem(newCachedItem: CachedItem): Promise<CachedItem> {
-    return await this.cacheModel.create(newCachedItem);
+  async createCacheItem(
+    newCachedItem: CreateCacheItemDto,
+  ): Promise<CachedItem> {
+    const createdItem = new this.cacheModel(newCachedItem);
+    return await createdItem.save();
   }
 }

@@ -2,9 +2,12 @@ import { Document, Types } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 export type CachedPrec = {
-  precId: Types.ObjectId;
+  precId: String;
+  date: Date;
   title: String;
   issues: String[];
+  courtOrder: Number;
+  isEnBanc: Boolean;
   sim: Number;
 };
 
