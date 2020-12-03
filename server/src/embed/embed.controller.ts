@@ -27,12 +27,13 @@ export class EmbedController {
               {},
             );
             return {
-              precId: resultPrec._id.toHexString(),
+              precId: resultPrec._id.toString(),
               date: resultPrec.date,
               title: resultPrec.title,
               issues: resultPrec.issues,
               courtOrder: resultPrec.courtOrder,
               isEnBanc: resultPrec.isEnBanc,
+              citationCount: resultPrec.citationCount,
               sim: sim,
             };
           },

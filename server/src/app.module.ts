@@ -11,6 +11,7 @@ import { PrecsModule } from './precs/precs.module';
 import { IssuesModule } from './issues/issues.module';
 import { EmbedModule } from './embed/embed.module';
 import { AuthModule } from './auth/auth.module';
+import { TermsModule } from './terms/terms.module';
 import configuration from './config/configuration';
 
 const dbInfo = configuration().database;
@@ -27,6 +28,7 @@ console.log(dbInfo);
     IssuesModule,
     EmbedModule,
     AuthModule,
+    TermsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

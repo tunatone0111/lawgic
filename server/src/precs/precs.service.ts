@@ -2,7 +2,7 @@ import { CreateCacheItemDto } from './dto/create-cache-item.dto';
 import { CachedItem, CachedItemDocument } from './schemas/cachedItem.schema';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, FilterQuery } from 'mongoose';
+import { Model, FilterQuery, Types } from 'mongoose';
 import { Prec, PrecDocument } from 'src/precs/schemas/prec.schema';
 
 @Injectable()
@@ -20,7 +20,7 @@ export class PrecsService {
   }
 
   async findOneById(id: string): Promise<Prec> {
-    return await this.precModel.findById(id).exec();
+    return await this.precModel.findById(Types.ObjectId(id)).exec();
   }
 
   async findOne(filt: FilterQuery<Prec> = {}, sel): Promise<Prec> {

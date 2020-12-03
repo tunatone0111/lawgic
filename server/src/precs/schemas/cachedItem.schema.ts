@@ -8,6 +8,7 @@ export type CachedPrec = {
   issues: String[];
   courtOrder: Number;
   isEnBanc: Boolean;
+  citationCount: Number;
   sim: Number;
 };
 

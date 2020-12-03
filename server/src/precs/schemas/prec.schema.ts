@@ -21,6 +21,9 @@ export class Prec {
   courtOrder: Number;
 
   @Prop()
+  citationCount: Number;
+
+  @Prop()
   isEnBanc: Boolean;
 
   @Prop()
