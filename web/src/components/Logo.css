@@ -1,0 +1,29 @@
+#logo path:nth-child(1) {
+	animation: y 2s ease forwards;
+	fill: transparent;
+}
+
+#logo path:nth-child(2) {
+	animation: b 2s ease forwards;
+	fill: transparent;
+}
+
+@keyframes y {
+	from {
+		fill: transparant;
+	}
+	to {
+		fill: #fb0;
+		stroke-width: 0;
+	}
+}
+
+@keyframes b {
+	from {
+		fill: transparant;
+	}
+	to {
+		fill: #000;
+		stroke-width: 0;
+	}
+}
