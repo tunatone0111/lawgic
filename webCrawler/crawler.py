@@ -1,5 +1,4 @@
 import requests
-from bs4 import NavigableString
 from bs4 import BeautifulSoup
 import json
 from tqdm import tqdm, trange
@@ -7,8 +6,25 @@ from tqdm.contrib.concurrent import process_map
 import re
 import sys
 from time import sleep
-
+from attr import attrs, attrib, asdict
 from multiprocessing import Process, Pool
+
+
+@attrs
+class Prec(object):
+    title = attrib(None, type=str)
+    date = attrib(None, type=str)
+    caseNum = attrib(None, type=str)
+    courtOrder = attrib(None, type=int)
+    isEnBanc = attrib(False, type=bool)
+    issues = attrib(None, type=list)
+    order = attrib(None, type=int)
+    yo = attrib(None, type=list)
+    refClauses = attrib(None, type=list)
+    refPrecs = attrib(None, type=list)
+    wholePrec = attrib(None, type=str)
+    judge = attrib(None, type=str)
+    citationCount = attrib(0, type=int)
 
 
 def parse_statements(raw):
@@ -32,58 +48,63 @@ def work(id):
             continue
         break
 
-    prec = dict()
+    prec = Prec()
     try:
         title = soup.select_one('h2').text.strip()
-        prec['title'] = title
+        prec.title = title
 
         subtitle = soup.select_one(".subtit1").text.strip()
-        prec['date'] = re.findall(
+        prec.date = re.findall(
             '[0-9]{4}\. [0-9]{1,2}\. [0-9]{1,2}\.', subtitle)[0]
-        prec['caseNum'] = re.findall(
+        prec.caseNum = re.findall(
             '[0-9]{2,4}[가-힣]{1,2}[0-9]{1,6}', subtitle)[0]
 
+        if any(re.findall('.*[가-깋].*', prec.caseNum)):
+            prec.courtOrder = 1
+        elif any(re.findall('.*[나-닣].*', prec.caseNum)):
+            prec.courtOrder = 2
+        elif any(re.findall('.*[다-딯].*', prec.caseNum)):
+            prec.courtOrder = 3
+        else:
+            prec.courtOrder = 0
+
+        prec.isEnBanc = any(re.findall('.*합.*', prec.caseNum))
+
         sa = soup.select_one("#sa")
-        prec['issues'] = None
         if sa != None:
             p = sa.find_next("p")
-            prec['issues'], prec['order'] = parse_statements(p.text)
+            prec.issues, prec.order = parse_statements(p.text)
 
         sa = soup.select_one("#yo")
-        prec['yo'] = None
         if sa != None:
             p = sa.find_next("p")
-            prec['yo'], _ = parse_statements(p.text)
+            prec.yo, _ = parse_statements(p.text)
 
         sa = soup.select_one("#conLsJo")
         if sa != None:
             p = sa.find_next("p")
-            prec['refClauses'] = [[j.strip() for j in jo.split(',')]
-                                  for jo in parse_statements(p.text)[0]]
+            prec.refClauses = [[j.strip() for j in jo.split(',')]
+                               for jo in parse_statements(p.text)[0]]
 
         sa = soup.select_one("#conPrec")
         if sa != None:
             p = sa.find_next("p")
-            prec['refPrecs'] = [[] for _ in range(prec['order'])]
+            prec.refPrecs = [[] for _ in range(prec.order)]
             for i in p.text.split('/'):
                 tmp = re.findall('[0-9]{4}.[0-9]{4,6}', i.strip())
                 for j in re.findall('\[[0-9]\]', i.strip()):
-                    prec['refPrecs'][int(j[1])-1].extend(tmp)
+                    prec.refPrecs[int(j[1])-1].extend(tmp)
+            prec.refPrecs = [x if any(x) else None for x in prec.refPrecs]
 
         sa = soup.select_one("#jun")
-        junmun = ""
-        for sibling in sa.next_siblings:
-            if isinstance(sibling, NavigableString):
-                continue
-            junmun += sibling.text + '\n'
-
-        prec['wholePrec'] = re.sub('\\n\\n.*', '', junmun).strip()
-        prec['judge'] = re.findall('\\n\\n.*', junmun)[0].strip()
+        sa = [sa, *list(sa.next_siblings)][::2]
+        prec.wholePrec = ''.join([str(x) for x in sa[:-2]])
+        prec.judge = sa[-2].text.strip()
 
     except:
         pass
 
-    return prec
+    return asdict(prec)
 
 
 if __name__ == '__main__':
@@ -107,4 +128,4 @@ if __name__ == '__main__':
         pool.join()
 
         with open(f'precs/precs_{page}.json', 'w', encoding='UTF-8') as f:
-            f.write(json.dumps(precs, indent=2, ensure_ascii=False))
+            f.write(json.dumps(precs[::-1], indent=2, ensure_ascii=False))
