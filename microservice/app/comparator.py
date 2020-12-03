@@ -3,6 +3,7 @@ from .db import DataBase
 from sklearn.feature_extraction.text import TfidfVectorizer
 import numpy as np
 from tqdm import tqdm
+import json
 
 
 class Comparator():
@@ -50,6 +51,9 @@ class TfidfComparator(Comparator):
             min_df=1, max_features=10000, dtype=np.float32).fit(issues_noun)
         self.tfidf_vectors = self.tfidf_vectorizer.transform(
             issues_noun).toarray()
+        with open('./vocab.json', 'w') as f:
+            f.write(json.dumps(
+                list(self.tfidf_vectorizer.vocabulary_.keys()), ensure_ascii=False))
 
     def get_sim_precs(self, target_string):
         target_nouns = ' '.join(self.mecab.nouns(target_string))
