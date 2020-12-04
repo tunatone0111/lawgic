@@ -1,29 +1,66 @@
+#logo path {
+	stroke-width: 2;
+}
+
+#logo path:nth-child(1),
+#logo path:nth-child(2),
+#logo path:nth-child(3) {
+	animation: filly 3s ease forwards;
+}
+#logo path:nth-child(4),
+#logo path:nth-child(5),
+#logo path:nth-child(6) {
+	animation: fillb 3s ease forwards;
+}
+
 #logo path:nth-child(1) {
-	animation: y 2s ease forwards;
-	fill: transparent;
+	stroke-dasharray: 281;
+	stroke-dashoffset: 281;
 }
 
 #logo path:nth-child(2) {
-	animation: b 2s ease forwards;
-	fill: transparent;
+	stroke-dasharray: 270;
+	stroke-dashoffset: 270;
 }
 
-@keyframes y {
+#logo path:nth-child(3) {
+	stroke-dasharray: 367;
+	stroke-dashoffset: 367;
+}
+#logo path:nth-child(4) {
+	stroke-dasharray: 403;
+	stroke-dashoffset: 403;
+}
+#logo path:nth-child(5) {
+	stroke-dasharray: 164;
+	stroke-dashoffset: 164;
+}
+#logo path:nth-child(6) {
+	stroke-dasharray: 206;
+	stroke-dashoffset: 206;
+}
+
+@keyframes filly {
 	from {
-		fill: transparant;
+	}
+	90% {
+		stroke-dashoffset: 0;
+		fill: transparent;
 	}
 	to {
+		stroke-dashoffset: 0;
 		fill: #fb0;
-		stroke-width: 0;
 	}
 }
-
-@keyframes b {
+@keyframes fillb {
 	from {
-		fill: transparant;
+	}
+	90% {
+		stroke-dashoffset: 0;
+		fill: transparent;
 	}
 	to {
-		fill: #000;
-		stroke-width: 0;
+		stroke-dashoffset: 0;
+		fill: black;
 	}
 }

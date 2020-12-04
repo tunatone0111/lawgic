@@ -36,9 +36,11 @@ export default function SearchBox() {
 					document.querySelector("#text-input-box.form-control") ? (
 					<ListGroup style={{ position: "absolute", top: "100%" }}>
 						{autoComplete.map((w, idx) => (
-							<ListGroup.Item key={idx} className={`auto-${idx}`}>
-								{w}
-							</ListGroup.Item>
+							<ListGroup.Item
+								key={idx}
+								className={`auto-${idx}`}
+								dangerouslySetInnerHTML={{ __html: w }}
+							/>
 						))}
 					</ListGroup>
 				) : null}

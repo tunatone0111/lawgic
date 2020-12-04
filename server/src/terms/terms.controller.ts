@@ -1,16 +1,22 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { getRegExp, engToKor } from 'korean-regexp';
-import vocabs from './vocab';
+import vocab1 from './vocab';
+import vocab2 from './vocab2';
+
+const vocabs = [...new Set([...vocab1, ...vocab2])];
 
 @Controller('api/terms')
 export class TermsController {
   @Get()
   lookUp(@Query('q') q: string) {
     const lastWord = q.split(' ').slice(-1)[0];
-    const regularExp = getRegExp(lastWord, {
+    const regexp = getRegExp(engToKor(lastWord), {
       initialSearch: true,
       startsWith: true,
     });
-    return vocabs.filter(w => w.match(regularExp)).slice(0, 10);
+    const matchedList = vocab2.filter(w => w.match(regexp)).slice(0, 10);
+    return matchedList.map(w =>
+      w.replace(regexp, `<span style="color: lightcoral">${w}</span>`),
+    );
   }
 }
