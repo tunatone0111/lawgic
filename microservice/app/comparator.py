@@ -72,9 +72,6 @@ class TfidfComparator(Comparator):
         sim_precs = sim_precs[np.where(
             sim_precs[:, 1].astype(np.float32) > 0.5)].tolist()
 
-        print(target_vector)
-        print(target_vector.tolist())
-
         return target_vector.tolist(), sim_precs
 
     def find_for_cache(self, target_string):
