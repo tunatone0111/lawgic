@@ -1,4 +1,5 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { JwtAuthGuard } from './../auth/jwt-auth.guard';
+import { Controller, Get, Param, UseGuards, Request } from '@nestjs/common';
 import { PrecsService } from './precs.service';
 
 @Controller('api/precs')
@@ -10,8 +11,11 @@ export class PrecsController {
     return await this.precsService.findAll({}, { caseNum: true });
   }
 
-  @Get('/myprecs')
-  async getMyPrecs() {}
+  @UseGuards(JwtAuthGuard)
+  @Get('/my')
+  async getMyPrecs(@Request() { user: { likedPrecs } }) {
+    return likedPrecs;
+  }
 
   @Get('/:id')
   async getOne(@Param('id') id: string) {

@@ -1,6 +1,15 @@
+import { JwtAuthGuard } from './../auth/jwt-auth.guard';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { CreateUserDto } from './dto/create-user.dto';
-import { Body, Controller, Delete, Get, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Post,
+  Put,
+  UseGuards,
+} from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User } from './schemas/user.schema';
 
@@ -18,6 +27,7 @@ export class UsersController {
     return this.usersService.createOne(newUser);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Put()
   putUsers(@Body() updateUserDto: UpdateUserDto): Promise<User> {
     return this.usersService.updateOne(updateUserDto);

@@ -1,13 +1,16 @@
 import { UsersService } from '../users/users.service';
 import { Injectable } from '@nestjs/common';
 import { User } from '../users/schemas/user.schema';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
-  constructor(private usersService: UsersService) {}
+  constructor(
+    private usersService: UsersService,
+    private jwtService: JwtService,
+  ) {}
 
   async validateUser(username: string, pass: string): Promise<Partial<User>> {
-    console.log(username, pass);
     const user = await this.usersService.readOne(username);
     if (user && user.password === pass) {
       return {
@@ -17,5 +20,13 @@ export class AuthService {
       };
     }
     return null;
+  }
+
+  async login(user: any) {
+    const payload = { username: user.username, sub: user.userId };
+    return {
+      // sign() to generate JWT
+      access_token: this.jwtService.sign(payload),
+    };
   }
 }
