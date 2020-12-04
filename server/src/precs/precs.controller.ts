@@ -10,6 +10,9 @@ export class PrecsController {
     return await this.precsService.findAll({}, { caseNum: true });
   }
 
+  @Get('/myprecs')
+  async getMyPrecs() {}
+
   @Get('/:id')
   async getOne(@Param('id') id: string) {
     return this.precsService.findOneById(id);

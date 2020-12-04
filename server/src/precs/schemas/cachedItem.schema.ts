@@ -1,10 +1,11 @@
-import { Document, Types } from 'mongoose';
+import { Document } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 export type CachedPrec = {
   precId: String;
   date: Date;
   title: String;
+  caseNum: String;
   issues: String[];
   courtOrder: Number;
   isEnBanc: Boolean;

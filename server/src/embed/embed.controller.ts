@@ -30,6 +30,7 @@ export class EmbedController {
               precId: resultPrec._id.toString(),
               date: resultPrec.date,
               title: resultPrec.title,
+              caseNum: resultPrec.caseNum,
               issues: resultPrec.issues,
               courtOrder: resultPrec.courtOrder,
               isEnBanc: resultPrec.isEnBanc,

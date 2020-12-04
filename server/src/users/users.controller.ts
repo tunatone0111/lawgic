@@ -1,3 +1,4 @@
+import { UpdateUserDto } from './dto/update-user.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { Body, Controller, Delete, Get, Post, Put } from '@nestjs/common';
 import { UsersService } from './users.service';
@@ -18,8 +19,8 @@ export class UsersController {
   }
 
   @Put()
-  putUsers(): string {
-    return 'this will put users';
+  putUsers(@Body() updateUserDto: UpdateUserDto): Promise<User> {
+    return this.usersService.updateOne(updateUserDto);
   }
 
   @Delete()

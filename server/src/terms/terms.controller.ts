@@ -16,7 +16,7 @@ export class TermsController {
     });
     const matchedList = vocab2.filter(w => w.match(regexp)).slice(0, 10);
     return matchedList.map(w =>
-      w.replace(regexp, `<span style="color: lightcoral">${w}</span>`),
+      w.replace(lastWord, `<span style="color: #fb0">${lastWord}</span>`),
     );
   }
 }

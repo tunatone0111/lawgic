@@ -24,7 +24,7 @@ export class User {
   isAdmin: boolean;
 
   @Prop({ default: [] })
-  likedPrecs: Types.ObjectId[];
+  likedPrecs: String[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

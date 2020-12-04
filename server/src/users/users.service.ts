@@ -1,8 +1,9 @@
+import { UpdateUserDto } from './dto/update-user.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { User, UserDocument } from './schemas/user.schema';
 import { BadRequestException, HttpStatus, Injectable } from '@nestjs/common';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 
 @Injectable()
 export class UsersService {
@@ -21,5 +22,12 @@ export class UsersService {
     }
     const createdUser = new this.userModel(createUserDto);
     return createdUser.save();
+  }
+
+  async updateOne(updateUserDto: UpdateUserDto): Promise<User> {
+    return await this.userModel.updateOne(
+      { username: updateUserDto.username as string },
+      { likedPrecs: updateUserDto.likedPrecs },
+    );
   }
 }
