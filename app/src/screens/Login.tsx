@@ -1,10 +1,11 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { View, StyleSheet, Image, Text } from "react-native";
-import { Input, Button } from "react-native-elements";
+import { Input, Button, SocialIcon } from "react-native-elements";
 import { AuthNavProps } from "../Routes";
 import { UserContext } from "../services/UserContext";
 import Icon from "react-native-vector-icons/FontAwesome";
+import TextForm from "../components/TextForm";
 
 type FormData = {
 	username: string;
@@ -16,7 +17,6 @@ export default function Login({ navigation, route }: AuthNavProps<"Login">) {
 	const { control, handleSubmit, errors } = useForm<FormData>();
 
 	const onSubmit = async ({ username, password }: FormData) => {
-		console.log(username, password);
 		fetch("http://34.64.175.123:4000/api/auth/login", {
 			method: "POST",
 			headers: {
@@ -40,55 +40,40 @@ export default function Login({ navigation, route }: AuthNavProps<"Login">) {
 			.catch((e) => console.error(e));
 	};
 
+	// Auto Login for Test
+	useEffect(() => {
+		onSubmit({ username: "test user", password: "changeplz" });
+	}, []);
+	///////////////////////
+
 	return (
 		<View style={styles.container}>
 			<Image style={styles.tinyLogo} source={require("../assets/logo.PNG")} />
-			<Controller
-				control={control}
-				render={({ onChange, onBlur, value }) => (
-					<Input
-						placeholder="username"
-						onBlur={onBlur}
-						onChangeText={(value) => onChange(value)}
-						value={value}
-						leftIcon={<Icon name="user" size={24} color="gray" />}
-					/>
-				)}
+			<TextForm
 				name="username"
-				rules={{ required: true }}
-				defaultValue=""
-			/>
-			{errors.username && <Text>This is required.</Text>}
-
-			<Controller
+				icon="user-circle"
 				control={control}
-				render={({ onChange, onBlur, value }) => (
-					<Input
-						placeholder="password"
-						onBlur={onBlur}
-						onChangeText={(value) => onChange(value)}
-						value={value}
-						secureTextEntry={true}
-						leftIcon={<Icon name="lock" size={24} color="gray" />}
-					/>
-				)}
-				name="password"
-				rules={{ required: true }}
-				defaultValue=""
+				error={errors.username}
 			/>
-			{errors.password && <Text>This is required.</Text>}
-
+			<TextForm
+				name="password"
+				icon="lock"
+				control={control}
+				error={errors.password}
+				isSecure={true}
+			/>
 			<Button
 				containerStyle={{ alignSelf: "stretch" }}
 				title="로그인"
 				onPress={handleSubmit(onSubmit)}
 			/>
 			<Button
-				containerStyle={{alignSelf: 'stretch'}}
+				containerStyle={{ alignSelf: "stretch" }}
 				title="회원가입"
-        onPress={()=>navigation.navigate('Register')}
-        type='clear'
+				onPress={() => navigation.navigate("Register")}
+				type="clear"
 			/>
+			<SocialIcon title="Sign In With Facebook" button type="facebook" />
 		</View>
 	);
 }

@@ -4,9 +4,11 @@ import { View, StyleSheet, Image, Text, Alert } from "react-native";
 import { Input, Button } from "react-native-elements";
 import { AuthNavProps } from "../Routes";
 import { UserContext } from "../services/UserContext";
+
+import TextForm from "../components/TextForm";
 import Icon from "react-native-vector-icons/FontAwesome5";
 
-type FormData = {
+export type FormData = {
 	username: string;
 	password: string;
 	email: string;
@@ -52,7 +54,7 @@ export default function Register({
 				navigation.goBack();
 			})
 			.catch((e: Error) => {
-        console.log("nono");
+				console.log("nono");
 				Alert.alert(e.message);
 			});
 	};
@@ -60,92 +62,39 @@ export default function Register({
 	return (
 		<View style={styles.container}>
 			<Image style={styles.tinyLogo} source={require("../assets/logo.PNG")} />
-			<Controller
-				control={control}
-				render={({ onChange, onBlur, value }) => (
-					<Input
-						placeholder="username"
-						onBlur={onBlur}
-						onChangeText={(value) => onChange(value)}
-						value={value}
-						leftIcon={<Icon name="user-circle" size={24} color="gray" />}
-					/>
-				)}
+			<TextForm
 				name="username"
-				rules={{ required: true }}
-				defaultValue=""
-			/>
-			{errors.username && <Text>This is required.</Text>}
-
-			<Controller
+				icon="user-circle"
 				control={control}
-				render={({ onChange, onBlur, value }) => (
-					<Input
-						placeholder="password"
-						onBlur={onBlur}
-						onChangeText={(value) => onChange(value)}
-						value={value}
-						secureTextEntry={true}
-						leftIcon={<Icon name="lock" size={24} color="gray" />}
-					/>
-				)}
+				error={errors.username}
+			/>
+			<TextForm
 				name="password"
-				rules={{ required: true }}
-				defaultValue=""
-			/>
-			{errors.password && <Text>This is required.</Text>}
-
-			<Controller
+				icon="lock"
 				control={control}
-				render={({ onChange, onBlur, value }) => (
-					<Input
-						placeholder="email"
-						onBlur={onBlur}
-						onChangeText={(value) => onChange(value)}
-						value={value}
-						leftIcon={<Icon name="envelope" size={24} color="gray" />}
-					/>
-				)}
+				error={errors.password}
+				isSecure={true}
+			/>
+			<TextForm
 				name="email"
-				rules={{ required: true }}
-				defaultValue=""
-			/>
-			{errors.email && <Text>This is required.</Text>}
-
-			<Controller
+				icon="envelope"
 				control={control}
-				render={({ onChange, onBlur, value }) => (
-					<Input
-						placeholder="first name"
-						onBlur={onBlur}
-						onChangeText={(value) => onChange(value)}
-						value={value}
-						leftIcon={<Icon name="address-card" size={24} color="gray" />}
-					/>
-				)}
+				error={errors.email}
+			/>
+			<TextForm
 				name="firstName"
-				rules={{ required: true }}
-				defaultValue=""
-			/>
-			{errors.firstName && <Text>This is required.</Text>}
-
-			<Controller
+				label="first name"
+				icon="address-card"
 				control={control}
-				render={({ onChange, onBlur, value }) => (
-					<Input
-						placeholder="last name"
-						onBlur={onBlur}
-						onChangeText={(value) => onChange(value)}
-						value={value}
-						leftIcon={<Icon name="address-card" size={24} color="gray" />}
-					/>
-				)}
-				name="lastName"
-				rules={{ required: true }}
-				defaultValue=""
+				error={errors.firstName}
 			/>
-			{errors.lastName && <Text>This is required.</Text>}
-
+			<TextForm
+				name="lastName"
+				label="last name"
+				icon="address-card"
+				control={control}
+				error={errors.lastName}
+			/>
 			<Button
 				containerStyle={{ alignSelf: "stretch" }}
 				title="회원가입"
@@ -160,7 +109,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		backgroundColor: "#fff",
 		alignItems: "center",
-		justifyContent: "center",
+		paddingTop: 30,
 		paddingHorizontal: 10
 	},
 	tinyLogo: {
