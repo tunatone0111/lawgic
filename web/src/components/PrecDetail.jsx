@@ -1,16 +1,14 @@
 // import "./PrecDetail.css";
-import Logo from "../assets/logo.PNG";
-import { useHistory, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { Button } from "react-bootstrap";
+import { Button, Container } from "react-bootstrap";
 
 //import Prec from "./Prec";
 
-function PrecDetail() {
+function PrecDetail({ history }) {
 	const params = useParams();
 	const id = params.id;
 	const [result, setResult] = useState(null);
-	const history = useHistory();
 
 	useEffect(async () => {
 		fetch(`http://34.64.175.123:4000/api/precs/${id}`)
@@ -21,7 +19,7 @@ function PrecDetail() {
 	if (result === null) return <div>loading...</div>;
 
 	return (
-		<>
+		<Container style={{ maxWidth: "60vw" }}>
 			<div
 				style={{
 					display: "flex",
@@ -29,7 +27,7 @@ function PrecDetail() {
 					padding: "10px 10px"
 				}}
 			>
-				<Button variant="outline-warning" onClick={() => history.goBack()}>
+				<Button onClick={history.goBack} variant="outline-warning">
 					뒤로가기
 				</Button>
 			</div>
@@ -44,7 +42,7 @@ function PrecDetail() {
 					dangerouslySetInnerHTML={{ __html: result.wholePrec }}
 				></div>
 			</div>
-		</>
+		</Container>
 	);
 }
 
