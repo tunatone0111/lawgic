@@ -1,0 +1,12 @@
+#auto-list *:hover {
+	background-color: rgb(255, 240, 198);
+	cursor: pointer;
+}
+
+#auto-list *.selected {
+	background-color: rgb(255, 240, 198);
+}
+
+.matched {
+	color: #fb0;
+}
