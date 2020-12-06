@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import "./Logo.css";
+import "../styles/Logo.css";
 
 export default function Logo({ width, height }) {
 	useEffect(() => {

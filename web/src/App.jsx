@@ -1,9 +1,9 @@
-import { Switch, BrowserRouter, Route, withRouter } from "react-router-dom";
-import Main from "./components/Main";
-import Search from "./components/Search";
-import PrecDetail from "./components/PrecDetail";
+import { Switch, BrowserRouter, Route } from "react-router-dom";
+import Main from "./pages/Main";
+import Search from "./pages/Search";
+import PrecDetail from "./pages/PrecDetail";
+import Login from "./pages/Login";
 import MyNavbar from "./components/MyNavbar";
-import Login from "./components/Login"
 
 function DefaultContainer() {
 	return (
@@ -11,7 +11,7 @@ function DefaultContainer() {
 			<MyNavbar />
 			<Route exact path="/search" component={Search} />
 			<Route exact path="/precs/:id" component={PrecDetail} />
-			<Route exact path={"/Login"} component={Login} />
+			<Route exact path="/login" component={Login} />
 		</>
 	);
 }

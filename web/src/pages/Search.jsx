@@ -1,7 +1,7 @@
-import "./Search.css";
-import { useHistory, useLocation } from "react-router-dom";
+import "../styles/Search.css";
+import { useLocation } from "react-router-dom";
 import { Spinner, Container, Row } from "react-bootstrap";
-import Prec from "./Prec";
+import Prec from "../components/Prec";
 import useFetch from "../services/useFetch";
 
 function Search() {

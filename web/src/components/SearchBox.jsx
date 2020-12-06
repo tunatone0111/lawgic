@@ -1,7 +1,7 @@
+import "../styles/SearchBox.css";
 import React, { useState, useEffect } from "react";
 import { FormControl, InputGroup, ListGroup } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import "./SearchBox.css";
 
 export default function SearchBox({ defaultValue }) {
 	const [autoComplete, setAutoComplete] = useState([]);
@@ -11,7 +11,7 @@ export default function SearchBox({ defaultValue }) {
 
 	useEffect(() => {
 		setTextAreaContent(defaultValue);
-	});
+	}, []);
 
 	function clearAutoComplete() {
 		setAutoComplete([]);
