@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
 import "./Logo.css";
 
 export default function Logo({ width, height }) {
@@ -10,7 +9,7 @@ export default function Logo({ width, height }) {
 		}
 	}, []);
 	return (
-		<Link to="/">
+		<a href="/">
 			<svg
 				id="logo"
 				width={width}
@@ -44,7 +43,7 @@ export default function Logo({ width, height }) {
 					stroke="black"
 				/>
 			</svg>
-		</Link>
+		</a>
 	);
 }
 
