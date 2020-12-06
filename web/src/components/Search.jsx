@@ -1,7 +1,5 @@
 import "./Search.css";
-import Logo from "../assets/logo.PNG";
 import { useHistory, useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
 import { Spinner, Container, Row } from "react-bootstrap";
 import Prec from "./Prec";
 import useFetch from "../services/useFetch";
@@ -9,7 +7,6 @@ import useFetch from "../services/useFetch";
 function Search() {
 	const location = useLocation();
 	const query = new URLSearchParams(location.search);
-	const history = useHistory();
 	const q = query.get("query");
 
 	const { data: precs, loading, eTime } = useFetch(

@@ -3,11 +3,15 @@ import { FormControl, InputGroup, ListGroup } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import "./SearchBox.css";
 
-export default function SearchBox() {
+export default function SearchBox({ defaultValue }) {
 	const [autoComplete, setAutoComplete] = useState([]);
 	const [spaceCursor, setSpaceCursor] = useState(0);
 	const [autoCursor, setAutoCursor] = useState(0);
 	const [textAreaContent, setTextAreaContent] = useState("");
+
+	useEffect(() => {
+		setTextAreaContent(defaultValue);
+	});
 
 	function clearAutoComplete() {
 		setAutoComplete([]);
@@ -150,3 +154,7 @@ export default function SearchBox() {
 		</>
 	);
 }
+
+SearchBox.defaultProps = {
+	defaultValue: ""
+};
