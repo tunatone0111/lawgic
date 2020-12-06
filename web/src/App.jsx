@@ -3,6 +3,7 @@ import Main from "./components/Main";
 import Search from "./components/Search";
 import PrecDetail from "./components/PrecDetail";
 import MyNavbar from "./components/MyNavbar";
+import Login from "./components/Login"
 
 function DefaultContainer() {
 	return (
@@ -10,6 +11,7 @@ function DefaultContainer() {
 			<MyNavbar />
 			<Route exact path="/search" component={Search} />
 			<Route exact path="/precs/:id" component={PrecDetail} />
+			<Route exact path={"/Login"} component={Login} />
 		</>
 	);
 }

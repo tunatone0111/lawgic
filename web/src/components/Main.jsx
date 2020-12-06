@@ -46,7 +46,7 @@ function Main() {
 	return (
 		<div className="d-flex flex-column mx-auto" style={{ maxWidth: "75vw" }}>
 			<div className="d-flex justify-content-end m-3">
-				<Button variant="outline-secondary">로그인하기</Button>
+				<Button variant="outline-secondary" onClick={() => history.push("/Login")}>로그인하기</Button>
 			</div>
 			<div
 				className="d-flex justify-content-center mr-5 ml-5"
