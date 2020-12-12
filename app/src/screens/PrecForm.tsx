@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
+import { Text } from "react-native-elements";
 import { AuthNavProps } from "../Routes";
 import { PrecType } from "../services/precsService";
 import HTML from "react-native-render-html";
@@ -20,13 +21,13 @@ export default function PrecForm({
 	}, [precId]);
 
 	return (
-		<View>
+		<View style={styles.container}>
 			{!prec ? (
 				<Text>Loading...</Text>
 			) : (
 				<>
-					<Text>{prec.title}</Text>
-					<Text>{prec.caseNum}</Text>
+					<Text h2>{prec.title}</Text>
+					<Text h3>{prec.caseNum}</Text>
 					<Text>{prec.issues}</Text>
 					<HTML html={prec.wholePrec} />
 				</>
@@ -35,4 +36,8 @@ export default function PrecForm({
 	);
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+	container: {
+		paddingHorizontal: 10
+	}
+});

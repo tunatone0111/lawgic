@@ -15,13 +15,7 @@ export default function Home({ navigation, route }: AuthNavProps<"Home">) {
 	};
 
 	useEffect(() => {
-		console.log(user!.likedPrecs);
-		fetch("http://34.64.175.123:4000/api/embed?q=저작권")
-			.then((res) => res.json())
-			.then((res) => {
-				console.log(res);
-				setPrecs(res);
-			});
+		setPrecs(user!.likedPrecs);
 	}, []);
 
 	return (
@@ -29,20 +23,9 @@ export default function Home({ navigation, route }: AuthNavProps<"Home">) {
 			<Header
 				backgroundColor="#fb0"
 				placement="left"
-				leftComponent={
-					<Avatar rounded icon={{ name: "home", type: "font-awesome" }} />
-				}
-				centerComponent={
-					<>
-						<Image
-							style={styles.tinyLogo}
-							source={require("../assets/logo.PNG")}
-						/>
-						<Text style={{ paddingBottom: 20 }}>
-							머신러닝 기반 판례 검색 시스템
-						</Text>
-					</>
-				}
+				// leftComponent={
+				// 	<Avatar rounded icon={{ name: "home", type: "font-awesome" }} />
+				// }
 				rightComponent={
 					!user ? (
 						<Button

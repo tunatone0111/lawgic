@@ -24,5 +24,4 @@ export type CachedPrecType = {
 	citationCount: number;
 	isEnBanc: boolean;
 	issues: string[];
-	sim: number;
 };

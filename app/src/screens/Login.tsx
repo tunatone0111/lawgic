@@ -4,7 +4,6 @@ import { View, StyleSheet, Image, Text } from "react-native";
 import { Input, Button, SocialIcon } from "react-native-elements";
 import { AuthNavProps } from "../Routes";
 import { UserContext } from "../services/UserContext";
-import Icon from "react-native-vector-icons/FontAwesome";
 import TextForm from "../components/TextForm";
 
 type FormData = {
@@ -73,7 +72,7 @@ export default function Login({ navigation, route }: AuthNavProps<"Login">) {
 				onPress={() => navigation.navigate("Register")}
 				type="clear"
 			/>
-			<SocialIcon title="Sign In With Facebook" button type="facebook" />
+			{/* <SocialIcon title="Sign In With Facebook" button type="facebook" /> */}
 		</View>
 	);
 }

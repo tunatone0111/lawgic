@@ -1,3 +1,5 @@
+import { CachedPrecType } from "./precsService";
+
 export type User = {
 	username: string;
 	email: string;
@@ -5,5 +7,5 @@ export type User = {
 	firstName: string;
 	lastName: string;
 	isAdmin: boolean;
-	likedPrecs: string[];
+	likedPrecs: CachedPrecType[];
 };
