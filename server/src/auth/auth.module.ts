@@ -17,7 +17,7 @@ import configuration from '../config/configuration';
     PassportModule,
     JwtModule.register({
       secret: configuration().jwtkey,
-      signOptions: { expiresIn: '60s' },
+      signOptions: { expiresIn: '10m' },
     }),
   ],
   providers: [AuthService, LocalStrategy, JwtStrategy],

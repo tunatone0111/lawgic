@@ -1,3 +1,4 @@
+import { UsersModule } from './../users/users.module';
 import { CachedItem, CachedItemSchema } from './schemas/cachedItem.schema';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -7,6 +8,7 @@ import { PrecsController } from './precs.controller';
 
 @Module({
   imports: [
+    UsersModule,
     MongooseModule.forFeature([{ name: Prec.name, schema: PrecSchema }]),
     MongooseModule.forFeature([
       { name: CachedItem.name, schema: CachedItemSchema },
