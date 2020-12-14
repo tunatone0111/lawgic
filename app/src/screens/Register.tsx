@@ -75,6 +75,10 @@ export default function Register({
 				error={errors.password}
 				isSecure={true}
 			/>
+			<Text style={styles.warning}>
+				비밀번호가 암호화되지 않습니다!!! <br />
+				쉬운 비밀번호를 설정하세요
+			</Text>
 			<TextForm
 				name="email"
 				icon="envelope"
@@ -115,5 +119,8 @@ const styles = StyleSheet.create({
 	tinyLogo: {
 		width: 120,
 		height: 80
+	},
+	warning: {
+		color: "red"
 	}
 });

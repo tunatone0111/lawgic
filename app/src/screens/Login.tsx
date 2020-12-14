@@ -1,7 +1,11 @@
 import React, { useContext, useEffect } from "react";
-import { useForm, Controller } from "react-hook-form";
 import { View, StyleSheet, Image, Text } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import jwt_decode from "jwt-decode";
+
 import { Input, Button, SocialIcon } from "react-native-elements";
+import { useForm, Controller } from "react-hook-form";
+
 import { AuthNavProps } from "../Routes";
 import { UserContext } from "../services/UserContext";
 import TextForm from "../components/TextForm";
@@ -33,16 +37,18 @@ export default function Login({ navigation, route }: AuthNavProps<"Login">) {
 				return res.json();
 			})
 			.then((res) => {
-				setUser(res);
+				const { username } = jwt_decode<any>(res.access_token);
+				setUser({ username: username });
+				AsyncStorage.setItem("token", res.access_token);
 				navigation.navigate("Home");
 			})
 			.catch((e) => console.error(e));
 	};
 
 	// Auto Login for Test
-	useEffect(() => {
-		onSubmit({ username: "test user", password: "changeplz" });
-	}, []);
+	// useEffect(() => {
+	// 	onSubmit({ username: "test user", password: "changeplz" });
+	// }, []);
 	///////////////////////
 
 	return (

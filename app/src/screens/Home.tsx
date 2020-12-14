@@ -5,6 +5,7 @@ import { AuthNavProps } from "../Routes";
 import { UserContext } from "../services/UserContext";
 import { CachedPrecType } from "../services/precsService";
 import Prec from "../components/Prec";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Home({ navigation, route }: AuthNavProps<"Home">) {
 	const { user, setUser } = useContext(UserContext)!;
@@ -15,7 +16,13 @@ export default function Home({ navigation, route }: AuthNavProps<"Home">) {
 	};
 
 	useEffect(() => {
-		setPrecs(user!.likedPrecs);
+		AsyncStorage.getItem("token").then((token) => {
+			fetch("http://34.64.175.123:4000/api/precs/my", {
+				headers: { Authorization: `Bearer ${token}` }
+			})
+				.then((res) => res.json())
+				.then((precs) => setPrecs(precs));
+		});
 	}, []);
 
 	return (
@@ -23,9 +30,7 @@ export default function Home({ navigation, route }: AuthNavProps<"Home">) {
 			<Header
 				backgroundColor="#fb0"
 				placement="left"
-				// leftComponent={
-				// 	<Avatar rounded icon={{ name: "home", type: "font-awesome" }} />
-				// }
+				leftComponent={<Text>Welcome! {user?.username}</Text>}
 				rightComponent={
 					!user ? (
 						<Button
@@ -47,11 +52,11 @@ export default function Home({ navigation, route }: AuthNavProps<"Home">) {
 			/>
 			<View style={styles.container}>
 				<FlatList
-					keyExtractor={(item) => item.precId}
+					keyExtractor={(item) => item.objId}
 					data={precs}
 					renderItem={({ item }) => (
 						<Prec
-							id={item.precId}
+							id={item.objId}
 							title={item.title}
 							caseNum={item.caseNum}
 							onPress={handlePress}

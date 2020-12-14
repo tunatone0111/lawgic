@@ -16,7 +16,7 @@ export type PrecType = {
 };
 
 export type CachedPrecType = {
-	precId: string;
+	objId: string;
 	title: string;
 	date: Date;
 	caseNum: string;
