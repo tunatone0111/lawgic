@@ -3,14 +3,15 @@ import { useLocation } from "react-router-dom";
 import { Spinner, Container, Row } from "react-bootstrap";
 import Prec from "../components/Prec";
 import useFetch from "../services/useFetch";
+import config from "../config";
 
 function Search() {
 	const location = useLocation();
 	const query = new URLSearchParams(location.search);
 	const q = query.get("query");
 
-	const { data: precs, loading, eTime } = useFetch(
-		encodeURI(`http://34.64.175.123:4000/api/embed?q=${q}`)
+	const { data: precs, eTime } = useFetch(
+		encodeURI(`${config.base_url}/api/embed?q=${q}`)
 	);
 
 	return (
@@ -29,10 +30,9 @@ function Search() {
 					<Row>
 						<p>(소요시간: {eTime}ms)</p>
 					</Row>
-					{precs.map((prec) => {
-						console.log(prec);
-						return <Prec key={prec.precId} prec={prec} />;
-					})}
+					{precs.map((prec) => (
+						<Prec key={prec.precId} prec={prec} />
+					))}
 				</>
 			)}
 		</Container>

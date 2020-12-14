@@ -27,6 +27,7 @@ export class AuthService {
     return {
       // sign() to generate JWT
       access_token: this.jwtService.sign(payload),
+      likedPrecs: user.likedPrecs.map(l => l.objId.toString()),
     };
   }
 }

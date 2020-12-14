@@ -1,22 +1,67 @@
-import React from "react";
+import React, { useState, useContext } from "react";
 import { Card, Row, Badge } from "react-bootstrap";
 import { useHistory, Link } from "react-router-dom";
+import config from "../config";
+import axios from "axios";
+import { UserContext } from "../services/UserContext";
 
 function Prec({ prec }) {
+	const { user, setUser } = useContext(UserContext);
+	const [liked, setLiked] = useState(
+		user && user.likedPrecs.filter((i) => i === prec.precId).length !== 0
+	);
 	const history = useHistory();
-	let badge = null;
-	switch (prec.courtOrder) {
-		case 1:
-			badge = <Badge variant="warning">1심</Badge>;
-			break;
-		case 2:
-			badge = <Badge variant="info">2심</Badge>;
-			break;
-		case 3:
-			badge = <Badge variant="dark">대법원</Badge>;
-			break;
-	}
+	const orderBadges = [
+		null,
+		<Badge variant="warning">1심</Badge>,
+		<Badge variant="info">2심</Badge>,
+		<Badge variant="dark">대법원</Badge>
+	];
 	const enBanc = <Badge variant="danger">합의체</Badge>;
+
+	function toggleLike() {
+		const newLiked = !liked;
+		setLiked(newLiked);
+		if (newLiked === true) {
+			axios
+				.put(
+					`${config.base_url}/api/precs/my`,
+					{ precId: prec.precId },
+					{
+						headers: {
+							Authorization: `Bearer ${localStorage.getItem("token")}`
+						}
+					}
+				)
+				.then(() => {
+					const { likedPrecs: newLikedPrecs } = user;
+					newLikedPrecs.push(prec.precId);
+					setUser({ ...user, likedPrecs: newLikedPrecs });
+				})
+				.catch(() => {
+					alert("something failed");
+					setLiked(!newLiked);
+				});
+		} else {
+			axios
+				.delete(`${config.base_url}/api/precs/my/${prec.precId}`, {
+					headers: {
+						Authorization: `Bearer ${localStorage.getItem("token")}`
+					}
+				})
+				.then(() => {
+					const { likedPrecs: newLikedPrecs } = user;
+					setUser({
+						...user,
+						likedPrecs: newLikedPrecs.filter((p) => p !== prec.precId)
+					});
+				})
+				.catch(() => {
+					alert("something failed");
+					setLiked(!newLiked);
+				});
+		}
+	}
 
 	function simcolor(sim) {
 		if (sim >= 0.7) {
@@ -31,16 +76,23 @@ function Prec({ prec }) {
 		<Row
 			className="mb-4 shadow p-1 hoverable"
 			style={{ backgroundColor: simcolor(prec.sim) }}
-			onClick={() => history.push("/precs/" + prec.precId)}
 		>
 			<Card.Body>
 				<Card.Subtitle className="d-flex justify-content-between">
-					<span>{prec.date.slice(0, 10)}</span>
+					<span>
+						<i
+							className={`${liked ? "fas" : "far"} fa-heart mr-2`}
+							onClick={toggleLike}
+						></i>
+						<span>{prec.date.slice(0, 10)}</span>
+					</span>
 					<span>피참조횟수:{prec.citationCount}</span>
 				</Card.Subtitle>
 				<br />
-				<Card.Title>
-					{prec.title} {badge} {prec.isEnBanc ? enBanc : null}
+				<Card.Subtitle>{prec.caseNum}</Card.Subtitle>
+				<Card.Title onClick={() => history.push("/precs/" + prec.precId)}>
+					{prec.title} {orderBadges[prec.courtOrder]}{" "}
+					{prec.isEnBanc ? enBanc : null}
 				</Card.Title>
 				{prec.issues &&
 					prec.issues.map((i, idx) => (

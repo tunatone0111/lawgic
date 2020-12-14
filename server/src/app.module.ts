@@ -13,6 +13,8 @@ import { EmbedModule } from './embed/embed.module';
 import { AuthModule } from './auth/auth.module';
 import { TermsModule } from './terms/terms.module';
 import configuration from './config/configuration';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 const dbInfo = configuration().database;
 console.log(dbInfo);
@@ -22,6 +24,9 @@ console.log(dbInfo);
     MongooseModule.forRoot(
       `mongodb://${dbInfo.user}:${dbInfo.pwd}@${dbInfo.host}:${dbInfo.port}/lawgic?authSource=admin`,
     ),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '../..', 'web/build'),
+    }),
     ConfigModule.forRoot({ load: [configuration] }),
     UsersModule,
     PrecsModule,

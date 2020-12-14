@@ -10,6 +10,7 @@ export default () => {
   return {
     name: 'LAWGIC',
     jwtkey: process.env.LAWGIC_JWT_KEY,
+    base_url: 'https://beta.lawgic.website',
     database: {
       host: 'localhost',
       port: 27017,

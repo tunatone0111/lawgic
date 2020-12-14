@@ -2,6 +2,7 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Button, Container } from "react-bootstrap";
+import config from "../config";
 
 //import Prec from "./Prec";
 
@@ -11,7 +12,7 @@ function PrecDetail({ history }) {
 	const [result, setResult] = useState(null);
 
 	useEffect(async () => {
-		fetch(`http://34.64.175.123:4000/api/precs/${id}`)
+		fetch(`${config.base_url}/api/precs/${id}`)
 			.then((res) => res.json())
 			.then((res) => setResult(res));
 	}, []);

@@ -64,10 +64,10 @@ export class PrecsController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Delete('/my')
+  @Delete('/my/:precId')
   async deleteMyPrecs(
     @Request() { user: { username, likedPrecs } },
-    @Body() { precId },
+    @Param('precId') precId: string,
   ) {
     const updatedLikedPrecs = likedPrecs.filter(
       p => p.objId.toString() !== precId,

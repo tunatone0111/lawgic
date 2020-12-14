@@ -1,42 +1,66 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
+import jwt_decode from "jwt-decode";
+import { Form, Button, Alert } from "react-bootstrap";
+import { useForm } from "react-hook-form";
+import { UserContext } from "../services/UserContext";
 
-const Login = () => {
-	const [id, setID] = useState("");
-	const [pw, setPW] = useState("");
+import config from "../config";
 
-	const onSubmit = () => {
-		fetch("http://34.64.175.123:4000/api/auth/login", {
+const Login = ({ history }) => {
+	const { register, handleSubmit, errors } = useForm();
+	const { user, setUser } = useContext(UserContext);
+
+	const onSubmit = ({ username, password }) => {
+		fetch(`${config.base_url}/api/auth/login`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json"
 			},
 			body: JSON.stringify({
-				username: id,
-				password: pw
+				username: username,
+				password: password
 			})
 		})
-			.then((response) => response.json())
-			.then((response) => {
-				localStorage.setItem("token", response.access_token);
-			});
+			.then((res) => res.json())
+			.then((res) => {
+				if (!res.access_token) {
+					throw new Error("Invalid Username or Password!");
+				}
+				const { username } = jwt_decode(res.access_token);
+				localStorage.setItem("token", res.access_token);
+				console.log(res.likedPrecs);
+				setUser({ username: username, likedPrecs: res.likedPrecs });
+				history.push("/");
+			})
+			.catch((e) => alert(e.message));
 	};
 
 	return (
-		<div style={{ display: "flex", flexDirection: "column" }}>
-			<input
-				type="text"
-				placeholder="ID"
-				value={id}
-				onChange={(e) => setID(e.target.value)}
-			/>
-			<input
-				type="password"
-				placeholder="PW"
-				value={pw}
-				onChange={(e) => setPW(e.target.value)}
-			/>
-			<button onClick={onSubmit}>SUBMIT</button>
-		</div>
+		<Form onSubmit={handleSubmit(onSubmit)}>
+			<Form.Group>
+				<Form.Label>Username</Form.Label>
+				<Form.Control
+					name="username"
+					type="text"
+					placeholder="Username"
+					ref={register({ required: true })}
+				/>
+				{errors.username && <Alert variant="danger">username required</Alert>}
+			</Form.Group>
+			<Form.Group>
+				<Form.Label>Password</Form.Label>
+				<Form.Control
+					name="password"
+					type="password"
+					placeholder="Password"
+					ref={register({ required: true })}
+				/>
+				{errors.password && <Alert variant="danger">password required</Alert>}
+			</Form.Group>
+			<Button variant="warning" type="submit">
+				로그인
+			</Button>
+		</Form>
 	);
 };
 

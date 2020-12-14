@@ -2,12 +2,12 @@ import React, { useEffect } from "react";
 import "../styles/Logo.css";
 
 export default function Logo({ width, height }) {
-	useEffect(() => {
-		const logo = document.querySelectorAll("#logo path");
-		for (let i = 0; i < logo.length; i = i + 1) {
-			console.log(logo[i].getTotalLength());
-		}
-	}, []);
+	// useEffect(() => {
+	// 	const logo = document.querySelectorAll("#logo path");
+	// 	for (let i = 0; i < logo.length; i = i + 1) {
+	// 		console.log(logo[i].getTotalLength());
+	// 	}
+	// }, []);
 	return (
 		<a href="/">
 			<svg

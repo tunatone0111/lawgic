@@ -2,6 +2,7 @@ import "../styles/SearchBox.css";
 import React, { useState, useEffect } from "react";
 import { FormControl, InputGroup, ListGroup } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import config from "../config";
 
 export default function SearchBox({ defaultValue }) {
 	const [autoComplete, setAutoComplete] = useState([]);
@@ -19,7 +20,7 @@ export default function SearchBox({ defaultValue }) {
 
 	function fetchAutoComplete(text) {
 		setSpaceCursor(text.lastIndexOf(" "));
-		fetch(`http://34.64.175.123:4000/api/terms?q=${text}`)
+		fetch(`${config.base_url}/api/terms?q=${text}`)
 			.then((res) => res.json())
 			.then((res) => setAutoComplete(res));
 	}
