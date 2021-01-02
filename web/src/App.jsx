@@ -1,12 +1,13 @@
-import { useState, useEffect } from "react";
-import { Switch, BrowserRouter, Route } from "react-router-dom";
-import Main from "./pages/Main";
-import Search from "./pages/Search";
-import PrecDetail from "./pages/PrecDetail";
-import Mypage from "./pages/Mypage";
-import Login from "./pages/Login";
+import { CssBaseline } from "@material-ui/core";
 import jwt_decode from "jwt-decode";
+import { useEffect, useState } from "react";
+import { Route, Switch } from "react-router-dom";
 import MyNavbar from "./components/MyNavbar";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Mypage from "./pages/Mypage";
+import PrecDetail from "./pages/PrecDetail";
+import Search from "./pages/Search";
 import { UserContext } from "./services/UserContext";
 
 function DefaultContainer() {
@@ -23,23 +24,23 @@ function DefaultContainer() {
 
 function App() {
 	const [user, setUser] = useState(undefined);
+	const userState = { user, setUser };
 
 	useEffect(() => {
 		localStorage.getItem("token") &&
 			setUser({
 				...user,
-				username: jwt_decode(localStorage.getItem("token")).username
+				username: jwt_decode(localStorage.getItem("token")).username,
 			});
 	}, [localStorage.getItem("token")]);
 
 	return (
-		<UserContext.Provider value={{ user, setUser }}>
-			<BrowserRouter>
-				<Switch>
-					<Route exact path="/" component={Main} />
-					<Route component={DefaultContainer} />
-				</Switch>
-			</BrowserRouter>
+		<UserContext.Provider value={userState}>
+			<CssBaseline />
+			<Switch>
+				<Route exact path="/" component={Home} />
+				<Route component={DefaultContainer} />
+			</Switch>
 		</UserContext.Provider>
 	);
 }

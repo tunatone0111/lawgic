@@ -1,10 +1,31 @@
-import "../styles/SearchBox.css";
-import React, { useState, useEffect } from "react";
-import { FormControl, InputGroup, ListGroup } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect, useCallback } from "react";
+import { Link, useHistory } from "react-router-dom";
+import {
+	Box,
+	Grid,
+	Button,
+	makeStyles,
+	TextareaAutosize,
+	TextField,
+	IconButton,
+	InputAdornment,
+} from "@material-ui/core";
+import SearchIcon from "@material-ui/icons/Search";
 import config from "../config";
 
+const useStyles = makeStyles((theme) => ({
+	root: {
+		width: "50rem",
+	},
+	textBox:{
+		borderRadius: 24
+	}
+}));
+
 export default function SearchBox({ defaultValue }) {
+	const classes = useStyles();
+
+	const history = useHistory();
 	const [autoComplete, setAutoComplete] = useState([]);
 	const [spaceCursor, setSpaceCursor] = useState(0);
 	const [autoCursor, setAutoCursor] = useState(0);
@@ -27,7 +48,7 @@ export default function SearchBox({ defaultValue }) {
 
 	function handleOnChange(event) {
 		setTextAreaContent(event.target.value);
-		fetchAutoComplete(event.target.value);
+		// fetchAutoComplete(event.target.value);
 	}
 
 	function handleKeyDown(e) {
@@ -51,6 +72,7 @@ export default function SearchBox({ defaultValue }) {
 			case "Enter":
 				e.preventDefault();
 				document.querySelector(".selected")?.click();
+				break;
 			case "ArrowRight":
 				e.preventDefault();
 				document.querySelector(".selected")?.click();
@@ -69,22 +91,37 @@ export default function SearchBox({ defaultValue }) {
 		document.getElementById("text-input-box").focus();
 	}
 
+	const handleSearch = useCallback(()=>{
+		history.push(`/search?query=${textAreaContent}`)
+	}, [])
+
 	return (
-		<>
-			<InputGroup className="mb-1">
-				<FormControl
-					className="form-control"
-					as="textarea"
-					id="text-input-box"
-					placeholder="사건을 입력하세요"
-					value={textAreaContent}
-					onChange={handleOnChange}
-					onBlur={clearAutoComplete}
-					onFocus={() => fetchAutoComplete(textAreaContent)}
-					onKeyDown={handleKeyDown}
-					style={{ borderRadius: "20px 0 0 20px" }}
-				></FormControl>
-				{textAreaContent &&
+		<Box className={classes.root}>
+			<TextField
+				multiline
+				variant="outlined"
+				size="small"
+				fullWidth
+				InputProps={{
+					id: "text-input-box",
+					endAdornment: (
+						<InputAdornment position="end">
+							<IconButton edge='end' onClick={handleSearch} >
+								<SearchIcon />
+							</IconButton>
+						</InputAdornment>
+					),
+					className: classes.textBox
+				}}
+				placeholder="사건을 입력하세요"
+				value={textAreaContent}
+				onChange={handleOnChange}
+				onBlur={clearAutoComplete}
+				onFocus={() => fetchAutoComplete(textAreaContent)}
+				onKeyDown={handleKeyDown}
+				
+			></TextField>
+			{/* {textAreaContent &&
 				document.activeElement ===
 					document.querySelector("#text-input-box.form-control") ? (
 					<ListGroup
@@ -139,23 +176,11 @@ export default function SearchBox({ defaultValue }) {
 							</ListGroup.Item>
 						))}
 					</ListGroup>
-				) : null}
-				<InputGroup.Append>
-					<Link
-						to={`/search?query=${textAreaContent}`}
-						className={`btn btn-secondary d-flex flex-column justify-content-center ${
-							textAreaContent ? null : "disabled"
-						}`}
-						style={{ borderRadius: "0 20px 20px 0" }}
-					>
-						검색
-					</Link>
-				</InputGroup.Append>
-			</InputGroup>
-		</>
+				) : null} */}
+		</Box>
 	);
 }
 
 SearchBox.defaultProps = {
-	defaultValue: ""
+	defaultValue: "",
 };
