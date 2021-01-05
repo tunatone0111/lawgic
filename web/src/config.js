@@ -1,5 +1,5 @@
 const config = {
-	base_url: "https://beta.lawgic.website"
+	base_url: process.env.REACT_APP_API_URL
 };
 
 export default config;

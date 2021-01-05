@@ -1,6 +1,14 @@
+import {
+	Container,
+	Button,
+	TextField,
+	Typography,
+	Card,
+	CardContent,
+	CardActions,
+} from "@material-ui/core";
 import React, { useContext } from "react";
 import jwt_decode from "jwt-decode";
-import { Form, Button, Alert } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { UserContext } from "../services/UserContext";
 
@@ -14,12 +22,12 @@ const Login = ({ history }) => {
 		fetch(`${config.base_url}/api/auth/login`, {
 			method: "POST",
 			headers: {
-				"Content-Type": "application/json"
+				"Content-Type": "application/json",
 			},
 			body: JSON.stringify({
 				username: username,
-				password: password
-			})
+				password: password,
+			}),
 		})
 			.then((res) => res.json())
 			.then((res) => {
@@ -36,31 +44,35 @@ const Login = ({ history }) => {
 	};
 
 	return (
-		<Form onSubmit={handleSubmit(onSubmit)}>
-			<Form.Group>
-				<Form.Label>Username</Form.Label>
-				<Form.Control
-					name="username"
-					type="text"
-					placeholder="Username"
-					ref={register({ required: true })}
-				/>
-				{errors.username && <Alert variant="danger">username required</Alert>}
-			</Form.Group>
-			<Form.Group>
-				<Form.Label>Password</Form.Label>
-				<Form.Control
-					name="password"
-					type="password"
-					placeholder="Password"
-					ref={register({ required: true })}
-				/>
-				{errors.password && <Alert variant="danger">password required</Alert>}
-			</Form.Group>
-			<Button variant="warning" type="submit">
-				로그인
-			</Button>
-		</Form>
+		<Container maxWidth="xs">
+			<Card>
+				<form onSubmit={handleSubmit(onSubmit)}>
+					<CardContent>
+						<Typography variant='h5' component="h2">로그인</Typography>
+						<TextField
+							name="username"
+							label="Username"
+							required
+							fullWidth
+							ref={register({ required: true })}
+						/>
+						<TextField
+							type="password"
+							name="password"
+							label="Password"
+							required
+							fullWidth
+							ref={register({ required: true })}
+						/>
+					</CardContent>
+					<CardActions>
+						<Button type="submit" variant="contained" color="primary">
+							로그인
+						</Button>
+					</CardActions>
+				</form>
+			</Card>
+		</Container>
 	);
 };
 

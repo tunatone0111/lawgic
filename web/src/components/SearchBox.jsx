@@ -1,25 +1,24 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { Link, useHistory } from "react-router-dom";
 import {
 	Box,
-	Grid,
-	Button,
-	makeStyles,
-	TextareaAutosize,
-	TextField,
 	IconButton,
 	InputAdornment,
+	makeStyles,
+	TextField,
 } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
+import React, { useCallback, useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import config from "../config";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
-		width: "50rem",
+		[theme.breakpoints.up("lg")]: {
+			minWidth: "50rem",
+		},
 	},
-	textBox:{
-		borderRadius: 24
-	}
+	textBox: {
+		borderRadius: 24,
+	},
 }));
 
 export default function SearchBox({ defaultValue }) {
@@ -91,9 +90,9 @@ export default function SearchBox({ defaultValue }) {
 		document.getElementById("text-input-box").focus();
 	}
 
-	const handleSearch = useCallback(()=>{
-		history.push(`/search?query=${textAreaContent}`)
-	}, [])
+	const handleSearch = useCallback(() => {
+		history.push(`/search?query=${textAreaContent}`);
+	}, []);
 
 	return (
 		<Box className={classes.root}>
@@ -106,12 +105,12 @@ export default function SearchBox({ defaultValue }) {
 					id: "text-input-box",
 					endAdornment: (
 						<InputAdornment position="end">
-							<IconButton edge='end' onClick={handleSearch} >
+							<IconButton edge="end" onClick={handleSearch}>
 								<SearchIcon />
 							</IconButton>
 						</InputAdornment>
 					),
-					className: classes.textBox
+					className: classes.textBox,
 				}}
 				placeholder="사건을 입력하세요"
 				value={textAreaContent}
@@ -119,7 +118,6 @@ export default function SearchBox({ defaultValue }) {
 				onBlur={clearAutoComplete}
 				onFocus={() => fetchAutoComplete(textAreaContent)}
 				onKeyDown={handleKeyDown}
-				
 			></TextField>
 			{/* {textAreaContent &&
 				document.activeElement ===

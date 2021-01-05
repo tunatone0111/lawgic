@@ -7,7 +7,7 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import React, { useCallback, useContext } from "react";
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import Logo from "../components/Logo";
 import SearchBox from "../components/SearchBox";
 import { UserContext } from "../services/UserContext";
@@ -27,6 +27,7 @@ const useStyles = makeStyles((theme) => ({
 
 function Home() {
 	const classes = useStyles();
+	const history = useHistory();
 	const { user, setUser } = useContext(UserContext);
 
 	const logOut = useCallback(() => {
@@ -38,13 +39,13 @@ function Home() {
 		<>
 			<Toolbar component="nav" className={classes.navBar}>
 				{!user ? (
-					<Link to="/login" component={Button} variant="contained">
+					<Button variant="contained" onClick={()=>history.push('/login')}>
 						로그인하기
-					</Link>
+					</Button>
 				) : (
 					<>
 						<Typography>{user.username} 님 환영합니다! </Typography>
-						<Link component={Button} variant="contained">마이페이지</Link>
+						<Button variant="contained" onClick={()=>history.push('/mypage')}>마이페이지</Button>
 						<Button variant="contained" onClick={logOut}>
 							로그아웃
 						</Button>

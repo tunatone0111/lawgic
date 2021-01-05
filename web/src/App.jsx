@@ -1,4 +1,4 @@
-import { CssBaseline } from "@material-ui/core";
+import { createMuiTheme, CssBaseline, ThemeProvider } from "@material-ui/core";
 import jwt_decode from "jwt-decode";
 import { useEffect, useState } from "react";
 import { Route, Switch } from "react-router-dom";
@@ -9,6 +9,14 @@ import Mypage from "./pages/Mypage";
 import PrecDetail from "./pages/PrecDetail";
 import Search from "./pages/Search";
 import { UserContext } from "./services/UserContext";
+
+const theme = createMuiTheme({
+	palette:{
+		primary: {
+			main: '#fb0'
+		}
+	}
+})
 
 function DefaultContainer() {
 	return (
@@ -35,6 +43,7 @@ function App() {
 	}, [localStorage.getItem("token")]);
 
 	return (
+		<ThemeProvider theme={theme}>
 		<UserContext.Provider value={userState}>
 			<CssBaseline />
 			<Switch>
@@ -42,6 +51,7 @@ function App() {
 				<Route component={DefaultContainer} />
 			</Switch>
 		</UserContext.Provider>
+		</ThemeProvider>
 	);
 }
 
