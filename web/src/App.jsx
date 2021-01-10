@@ -1,4 +1,5 @@
 import { createMuiTheme, CssBaseline, ThemeProvider } from "@material-ui/core";
+import { green } from "@material-ui/core/colors";
 import jwt_decode from "jwt-decode";
 import { useEffect, useState } from "react";
 import { Route, Switch } from "react-router-dom";
@@ -14,7 +15,8 @@ const theme = createMuiTheme({
 	palette:{
 		primary: {
 			main: '#fb0'
-		}
+		},
+		success: green
 	}
 })
 
