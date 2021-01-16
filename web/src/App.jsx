@@ -12,13 +12,13 @@ import Search from "./pages/Search";
 import { UserContext } from "./services/UserContext";
 
 const theme = createMuiTheme({
-	palette:{
+	palette: {
 		primary: {
-			main: '#fb0'
+			main: "#fb0",
 		},
-		success: green
-	}
-})
+		success: green,
+	},
+});
 
 function DefaultContainer() {
 	return (
@@ -46,13 +46,13 @@ function App() {
 
 	return (
 		<ThemeProvider theme={theme}>
-		<UserContext.Provider value={userState}>
-			<CssBaseline />
-			<Switch>
-				<Route exact path="/" component={Home} />
-				<Route component={DefaultContainer} />
-			</Switch>
-		</UserContext.Provider>
+			<UserContext.Provider value={userState}>
+				<CssBaseline />
+				<Switch>
+					<Route exact path="/" component={Home} />
+					<Route component={DefaultContainer} />
+				</Switch>
+			</UserContext.Provider>
 		</ThemeProvider>
 	);
 }

@@ -3,11 +3,11 @@ import {
 	Container,
 	Grid,
 	Toolbar,
-	Typography
+	Typography,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import React, { useCallback, useContext } from "react";
-import { useHistory } from "react-router-dom";
+import ButtonLink from "../components/ButtonLink";
 import Logo from "../components/Logo";
 import SearchBox from "../components/SearchBox";
 import { UserContext } from "../services/UserContext";
@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
 		justifyContent: "flex-end",
 	},
 	root: {
-		marginTop: '20vh',
+		marginTop: "20vh",
 	},
 	logoWrapper: {
 		width: 300,
@@ -27,7 +27,6 @@ const useStyles = makeStyles((theme) => ({
 
 function Home() {
 	const classes = useStyles();
-	const history = useHistory();
 	const { user, setUser } = useContext(UserContext);
 
 	const logOut = useCallback(() => {
@@ -39,13 +38,15 @@ function Home() {
 		<>
 			<Toolbar component="nav" className={classes.navBar}>
 				{!user ? (
-					<Button variant="contained" onClick={()=>history.push('/login')}>
+					<ButtonLink disabled variant="contained" to="/login">
 						로그인하기
-					</Button>
+					</ButtonLink>
 				) : (
 					<>
 						<Typography>{user.username} 님 환영합니다! </Typography>
-						<Button variant="contained" onClick={()=>history.push('/mypage')}>마이페이지</Button>
+						<ButtonLink variant="contained" to="/mypage">
+							마이페이지
+						</ButtonLink>
 						<Button variant="contained" onClick={logOut}>
 							로그아웃
 						</Button>

@@ -18,6 +18,7 @@ import React, { useCallback, useContext, useState } from "react";
 import { useHistory } from "react-router-dom";
 import config from "../config";
 import { UserContext } from "../services/UserContext";
+import ButtonLink from "./ButtonLink";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -130,19 +131,20 @@ function Prec({ prec }) {
 			</CardContent>
 			<CardActions style={{ justifyContent: "flex-end" }}>
 				<Checkbox
+					disabled
 					edge="start"
 					icon={<FavoriteIcon />}
 					checkedIcon={<FavoriteBorderIcon />}
 					checked={liked}
 					onClick={toggleLike}
 				/>
-				<Button
+				<ButtonLink
 					color="primary"
 					variant="contained"
-					onClick={() => history.push("/precs/" + prec.precId)}
+					to={`/precs/${prec.precId}`}
 				>
 					상세보기
-				</Button>
+				</ButtonLink>
 			</CardActions>
 		</Card>
 	);

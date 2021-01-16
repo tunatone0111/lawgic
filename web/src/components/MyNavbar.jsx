@@ -58,6 +58,7 @@ export default function MyNavbar() {
 							<Grid item>
 								{!user ? (
 									<Button
+										disabled
 										variant="contained"
 										onClick={() => history.push("/login")}
 									>
