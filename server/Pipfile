@@ -6,7 +6,6 @@ name = "pypi"
 [packages]
 bs4 = "*"
 xmltodict = "*"
-sqlalchemy = "*"
 flask = "*"
 autopep8 = "*"
 lxml = "*"
@@ -14,7 +13,9 @@ elasticsearch = "*"
 urllib3 = "*"
 pandas = "*"
 tqdm = "*"
-tinydb = "*"
+requests = "*"
+sklearn = "*"
+konlpy = "*"
 
 [dev-packages]
 

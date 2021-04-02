@@ -8,11 +8,19 @@ from bs4 import BeautifulSoup
 import bs4
 import requests
 import pandas as pd
+import numpy as np
 import xmltodict
 from tqdm import tqdm
-from tinydb import TinyDB, Query, where
+from elasticsearch import Elasticsearch
 
-db = TinyDB('dev.json')
+es = Elasticsearch('http://localhost:9200')
+
+with open('mappings/prec.json', 'r') as f:
+    mapping = json.load(f)
+
+if es.indices.exists(index='precs'):
+    es.indices.delete(index="precs")
+es.indices.create(index='precs', body=mapping)
 
 
 class Court(TypedDict):
@@ -30,6 +38,7 @@ class Issue(TypedDict):
     yo: str
     refClauses: List[str]
     refPrecs: List[str]
+    vector: List
 
 
 class Prec(TypedDict):
@@ -101,12 +110,12 @@ def my_issue_parser(prec_raw) -> Optional[List[Issue]]:
     result: List[Issue] = []
     if not any(matched):
         result.append(Issue(text=rm_tags(issue_raw).strip(),
-                            yo='', refClauses=[], refPrecs=[]))
+                            yo='', refClauses=[], refPrecs=[], vector=np.zeros(2048, float).tolist()))
     else:
         idxs = [x.start() for x in matched]
         for i, j in zip(idxs, [*idxs[1:], None]):
             result.append(
-                Issue(text=rm_tags(issue_raw[i+3:j].strip()), yo='', refClauses=[], refPrecs=[]))
+                Issue(text=rm_tags(issue_raw[i+3:j].strip()), yo='', refClauses=[], refPrecs=[], vector=np.zeros(2048, float).tolist()))
 
     yo_raw = prec_raw['판결요지']
     if yo_raw == None:
@@ -153,6 +162,7 @@ def my_issue_parser(prec_raw) -> Optional[List[Issue]]:
 # prec_id = 212883
 # prec_id = 212749
 # prec_id = 169727
+# prec_id = 212607
 
 # prec_raw = get_prec_raw(prec_id)
 # prec: Prec = {
@@ -171,31 +181,38 @@ def my_issue_parser(prec_raw) -> Optional[List[Issue]]:
 # }
 # pprint(prec)
 
+err = 0
+
 res = requests.get('http://www.law.go.kr/DRF/lawSearch.do', params={
     "OC": api_key,
     "target": 'prec',
     "type": "XML",
-    "display": 10
+    "display": 100
 })
 precs = pd.DataFrame(json.loads(json.dumps(xmltodict.parse(res.text)))[
     'PrecSearch']['prec'])
 for prec_id in tqdm(precs['판례일련번호']):
-    prec_raw = get_prec_raw(int(prec_id))
-    prec: Prec = {
-        'precId': prec_raw['판례정보일련번호'],
-        'title': prec_raw['사건명'],
-        'caseNum': prec_raw['사건번호'],
-        'date': datetime.strptime(prec_raw['선고일자'], "%Y%m%d"),
-        'court': {'name': prec_raw['법원명'], 'code': prec_raw['법원종류코드']},
-        'caseType': {'name': prec_raw['사건종류명'], 'code': prec_raw['사건종류코드']},
-        'judgementType': prec_raw['판결유형'],  # 판결 유형
-        'sentence': prec_raw['선고'],  # 선고
-        'issues': my_issue_parser(prec_raw),  # 판시사항
-        'wholePrec': prec_raw['판례내용'],  # 판례내용
-        'judge': '잘 몰라요',  # 판사
-        'citationCount': 0  # 참조횟수
-    }
-    db.insert(prec)
+    try:
+        prec_raw = get_prec_raw(int(prec_id))
+        prec: Prec = {
+            'precId': prec_raw['판례정보일련번호'],
+            'title': prec_raw['사건명'],
+            'caseNum': prec_raw['사건번호'],
+            'date': datetime.strptime(prec_raw['선고일자'], "%Y%m%d"),
+            'court': {'name': prec_raw['법원명'], 'code': prec_raw['법원종류코드']},
+            'caseType': {'name': prec_raw['사건종류명'], 'code': prec_raw['사건종류코드']},
+            'judgementType': prec_raw['판결유형'],  # 판결 유형
+            'sentence': prec_raw['선고'],  # 선고
+            'issues': my_issue_parser(prec_raw),  # 판시사항
+            'wholePrec': prec_raw['판례내용'],  # 판례내용
+            'judge': '잘 몰라요',  # 판사
+            'citationCount': 0  # 참조횟수
+        }
+        es.index(index="precs", doc_type="_doc", id=prec['precId'], body=prec)
+    except Exception as e:
+        print(e)
+        err = err + 1
+print(f'error: {err}')
 
 # for k, v in prec.items():
 # print(k, ": ", v, end='\n\n')
