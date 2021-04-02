@@ -6,10 +6,10 @@ from typing import List, Literal, Optional, TypedDict
 
 from bs4 import BeautifulSoup
 import bs4
-import numpy as np
-import pandas as pd
 import requests
+import pandas as pd
 import xmltodict
+from tqdm import tqdm
 
 
 class Court(TypedDict):
@@ -45,18 +45,6 @@ class Prec(TypedDict):
 
 
 api_key = 'aquila193015'
-
-# res = requests.get('http://www.law.go.kr/DRF/lawSearch.do', params={
-#     "OC": api_key,
-#     "target": 'prec',
-#     "type": "XML",
-#     "display": 10
-# })
-# precs = pd.DataFrame(json.loads(json.dumps(xmltodict.parse(res.text)))[
-#     'PrecSearch']['prec'])
-# del precs['@id']
-# del precs['판례상세링크']
-# print(precs)
 
 
 # issuesRaw = precRaw['판시사항'].split('<br/>')[:-1]
@@ -159,27 +147,53 @@ def my_issue_parser(prec_raw) -> Optional[List[Issue]]:
     return result
 
 
-prec_id = 212839
 # prec_id = 212883
 # prec_id = 212749
 # prec_id = 169727
 
-prec_raw = get_prec_raw(prec_id)
-prec: Prec = {
-    'precId': prec_raw['판례정보일련번호'],
-    'title': prec_raw['사건명'],
-    'caseNum': prec_raw['사건번호'],
-    'date': datetime.strptime(prec_raw['선고일자'], "%Y%m%d"),
-    'court': {'name': prec_raw['법원명'], 'code': prec_raw['법원종류코드']},
-    'caseType': {'name': prec_raw['사건종류명'], 'code': prec_raw['사건종류코드']},
-    'judgementType': prec_raw['판결유형'],  # 판결 유형
-    'sentence': prec_raw['선고'],  # 선고
-    'issues': my_issue_parser(prec_raw),  # 판시사항
-    'wholePrec': prec_raw['판례내용'],  # 판례내용
-    'judge': '잘 몰라요',  # 판사
-    'citationCount': 0  # 참조횟수
-}
-pprint(prec)
+# prec_raw = get_prec_raw(prec_id)
+# prec: Prec = {
+#     'precId': prec_raw['판례정보일련번호'],
+#     'title': prec_raw['사건명'],
+#     'caseNum': prec_raw['사건번호'],
+#     'date': datetime.strptime(prec_raw['선고일자'], "%Y%m%d"),
+#     'court': {'name': prec_raw['법원명'], 'code': prec_raw['법원종류코드']},
+#     'caseType': {'name': prec_raw['사건종류명'], 'code': prec_raw['사건종류코드']},
+#     'judgementType': prec_raw['판결유형'],  # 판결 유형
+#     'sentence': prec_raw['선고'],  # 선고
+#     'issues': my_issue_parser(prec_raw),  # 판시사항
+#     'wholePrec': prec_raw['판례내용'],  # 판례내용
+#     'judge': '잘 몰라요',  # 판사
+#     'citationCount': 0  # 참조횟수
+# }
+# pprint(prec)
+
+res = requests.get('http://www.law.go.kr/DRF/lawSearch.do', params={
+    "OC": api_key,
+    "target": 'prec',
+    "type": "XML",
+    "display": 10
+})
+precs = pd.DataFrame(json.loads(json.dumps(xmltodict.parse(res.text)))[
+    'PrecSearch']['prec'])
+for prec_id in tqdm(precs['판례일련번호']):
+    prec_raw = get_prec_raw(int(prec_id))
+    prec: Prec = {
+        'precId': prec_raw['판례정보일련번호'],
+        'title': prec_raw['사건명'],
+        'caseNum': prec_raw['사건번호'],
+        'date': datetime.strptime(prec_raw['선고일자'], "%Y%m%d"),
+        'court': {'name': prec_raw['법원명'], 'code': prec_raw['법원종류코드']},
+        'caseType': {'name': prec_raw['사건종류명'], 'code': prec_raw['사건종류코드']},
+        'judgementType': prec_raw['판결유형'],  # 판결 유형
+        'sentence': prec_raw['선고'],  # 선고
+        'issues': my_issue_parser(prec_raw),  # 판시사항
+        'wholePrec': prec_raw['판례내용'],  # 판례내용
+        'judge': '잘 몰라요',  # 판사
+        'citationCount': 0  # 참조횟수
+    }
+    pprint(prec)
+
 # for k, v in prec.items():
 # print(k, ": ", v, end='\n\n')
 # print(json.dumps(prec['issues'][0]['refClauses'][0]))
