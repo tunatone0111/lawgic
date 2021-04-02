@@ -10,6 +10,9 @@ import requests
 import pandas as pd
 import xmltodict
 from tqdm import tqdm
+from tinydb import TinyDB, Query, where
+
+db = TinyDB('dev.json')
 
 
 class Court(TypedDict):
@@ -192,7 +195,7 @@ for prec_id in tqdm(precs['판례일련번호']):
         'judge': '잘 몰라요',  # 판사
         'citationCount': 0  # 참조횟수
     }
-    pprint(prec)
+    db.insert(prec)
 
 # for k, v in prec.items():
 # print(k, ": ", v, end='\n\n')
