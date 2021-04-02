@@ -19,7 +19,7 @@ import { useLocation } from "react-router";
 import useSwr from "swr";
 import Navbar from "../components/Navbar";
 import Prec from "../components/Prec";
-import { mockFetcher } from "../services/fetcher";
+import fetcher, { mockFetcher } from "../services/fetcher";
 import _ from "lodash";
 
 const useStyles = makeStyles((theme) => ({
@@ -33,8 +33,14 @@ function Search() {
 	const yearLimit = [1970, new Date().getFullYear()];
 	const query = new URLSearchParams(useLocation().search);
 	const { data, error } = useSwr(
-		`/api/search?query=${query.get("query")}`,
-		mockFetcher
+		`http://localhost:5000/api/search?query=${query.get("query")}`,
+		async (url) => {
+			const res = await fetcher(url);
+			return {
+				...res,
+				precs: res.precs.map((p: any) => ({ ...p, date: new Date(p.date) })),
+			};
+		}
 	);
 
 	const [page, setPage] = useState(0);
@@ -65,7 +71,7 @@ function Search() {
 		if (data) {
 			const { precs } = data;
 			setFilteredPrecs([
-				...precs.filter((p) => {
+				...precs.filter((p: any) => {
 					let [s, e] = yearRange;
 					if (s === yearLimit[0]) s = 0;
 					return _.inRange(p.date.getFullYear(), s, e + 1);
