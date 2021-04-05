@@ -41,7 +41,7 @@ function SearchBox() {
 						<IconButton
 							edge="end"
 							component={Link}
-							to={`/search?query=${query}`}
+							to={`/search?query=${query.trim()}`}
 						>
 							<SearchIcon />
 						</IconButton>
