@@ -29,8 +29,7 @@
 					"text": { "type": "text" },
 					"yo": { "type": "text" },
 					"refClauses": { "type": "text" },
-					"refPrecs": { "type": "text" },
-					"vector": { "type": "dense_vector", "dims": 2048 }
+					"refPrecs": { "type": "text" }
 				}
 			},
 			"wholePrec": { "type": "text" },

@@ -16,6 +16,7 @@ tqdm = "*"
 requests = "*"
 sklearn = "*"
 konlpy = "*"
+flask-cors = "*"
 
 [dev-packages]
 
