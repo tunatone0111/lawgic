@@ -16,6 +16,7 @@ import { useHistory, useLocation } from "react-router";
 import useSwr from "swr";
 import Navbar from "../components/Navbar";
 import Prec from "../components/Prec";
+import Report from "../components/Report";
 import fetcher from "../services/fetcher";
 
 const useStyles = makeStyles((theme) => ({
@@ -37,7 +38,9 @@ function Search() {
 	const yearLimit = [1970, new Date().getFullYear()];
 	const query = new URLSearchParams(useLocation().search);
 	const { data, error } = useSwr(
-		`${process.env.REACT_APP_API_URL}/api/search?query=${query.get("query")}`,
+		`${process.env.REACT_APP_API_URL}/api/search?query=${query.get(
+			"query"
+		)}&type=${query.get("type")}`,
 		async (url) => {
 			const res = await fetcher(url);
 			return {
@@ -109,35 +112,27 @@ function Search() {
 				<Container component="section">
 					<Grid container spacing={2}>
 						<Grid item xs={2}>
-							<Grid container direction="column">
-								<Grid item>
-									<Slider
-										value={yearRange}
-										onChange={handleChangeYearRange}
-										valueLabelDisplay="on"
-										min={yearLimit[0]}
-										max={yearLimit[1]}
-										className={classes.slider}
+							<Slider
+								value={yearRange}
+								onChange={handleChangeYearRange}
+								valueLabelDisplay="on"
+								min={yearLimit[0]}
+								max={yearLimit[1]}
+								className={classes.slider}
+							/>
+							<FormControlLabel
+								control={
+									<Checkbox
+										color="primary"
+										value={onlySupreme}
+										onChange={(e) => setOnlySupreme(e.target.checked)}
 									/>
-								</Grid>
-								<Grid item>
-									<FormControlLabel
-										control={
-											<Checkbox
-												color="primary"
-												value={onlySupreme}
-												onChange={(e) => setOnlySupreme(e.target.checked)}
-											/>
-										}
-										label="대법원판례만 보기"
-									/>
-								</Grid>
-								<Grid item>
-									<Button variant="contained" onClick={filterPrecs}>
-										Apply
-									</Button>
-								</Grid>
-							</Grid>
+								}
+								label="대법원판례만 보기"
+							/>
+							<Button variant="contained" onClick={filterPrecs}>
+								필터 적용
+							</Button>
 						</Grid>
 						<Grid item xs={10}>
 							<TablePagination
@@ -147,6 +142,7 @@ function Search() {
 								onChangePage={handleChangePage}
 								rowsPerPage={rowsPerPage}
 								onChangeRowsPerPage={handleChangeRowsPerPage}
+								labelRowsPerPage="테이블 당 표시할 항목 수"
 							/>
 							{pagedPrecs.length === 0 ? (
 								<Typography
@@ -161,6 +157,7 @@ function Search() {
 							)}
 						</Grid>
 					</Grid>
+					<Report />
 				</Container>
 			)}
 		</>

@@ -18,6 +18,9 @@ const useStyles = makeStyles((theme) => ({
 		"&:hover": {
 			cursor: "pointer",
 		},
+		[theme.breakpoints.down("sm")]: {
+			display: "none",
+		},
 	},
 }));
 
@@ -29,8 +32,8 @@ function Navbar() {
 			<AppBar color="default" component="nav">
 				<Toolbar>
 					<Container>
-						<Grid container alignItems="center" spacing={2}>
-							<Grid item>
+						<Grid container alignItems="center" justify="center" spacing={2}>
+							<Grid item xs={false} md={1}>
 								<Box
 									width="75px"
 									height="50px"

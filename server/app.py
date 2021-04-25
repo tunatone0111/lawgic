@@ -20,32 +20,59 @@ def create_app(ENV='dev'):
     @app.route('/api/search')
     def search():
         query = request.args.get('query')
-        res = vectorizer.get_sim_precs(query)
+        search_type = request.args.get('type')
         try:
-            res = [{
-                **{k: [{kk: vv[0] for kk, vv in vv.items()} for vv in v] if k == 'issues' else v[0] for (k, v) in x['fields'].items()},
-                'sim': float(res[idx, 1])
-            } for idx, x in enumerate(db.client.search(
-                index='precs',
-                body={
-                    "size": 100,
-                    "query": {
-                        "ids": {
-                            "values": res[:, 0].tolist()
-                        }
-                    },
-                    'fields': ['precId', 'title', 'caseNum',  'date', 'court.*', 'caseType.*', 'judgementType', 'sentence', 'issues.text', 'issues.refClauses', 'issues.refPrecs', 'judge', 'citationCount'],
-                    "_source": False
-                }
-            )['hits']['hits'])]
-            for i in range(len(res)):
-                res[i] = {**res[i], 'court': {'name': res[i]['court.name'], 'code': res[i]['court.code']},
-                          'caseType': {'name': res[i]['caseType.name'], 'code': res[i]['caseType.code']}}
-                del res[i]['court.name']
-                del res[i]['court.code']
-                del res[i]['caseType.name']
-                del res[i]['caseType.code']
-            res = jsonify(precs=res)
+            if search_type == "precNum":
+                res = [{
+                    **{k: [{kk: vv[0] for kk, vv in vv.items()} for vv in v] if k == 'issues' else v[0] for (k, v) in x['fields'].items()},
+                    'sim': 1
+                } for x in db.client.search(
+                    index='precs',
+                    body={
+                        "size": 100,
+                        "query": {
+                            "match": {
+                                "caseNum": query
+                            }
+                        },
+                        'fields': ['precId', 'title', 'caseNum',  'date', 'court.*', 'caseType.*', 'judgementType', 'sentence', 'issues.text', 'issues.refClauses', 'issues.refPrecs', 'judge', 'citationCount'],
+                        "_source": False
+                    }
+                )['hits']['hits']]
+                for i in range(len(res)):
+                    res[i] = {**res[i], 'court': {'name': res[i]['court.name'], 'code': res[i]['court.code']},
+                              'caseType': {'name': res[i]['caseType.name'], 'code': res[i]['caseType.code']}}
+                    del res[i]['court.name']
+                    del res[i]['court.code']
+                    del res[i]['caseType.name']
+                    del res[i]['caseType.code']
+                res = jsonify(precs=res)
+            else:
+                res = vectorizer.get_sim_precs(query)
+                res = [{
+                    **{k: [{kk: vv[0] for kk, vv in vv.items()} for vv in v] if k == 'issues' else v[0] for (k, v) in x['fields'].items()},
+                    'sim': float(res[idx, 1])
+                } for idx, x in enumerate(db.client.search(
+                    index='precs',
+                    body={
+                        "size": 100,
+                        "query": {
+                            "ids": {
+                                "values": res[:, 0].tolist()
+                            }
+                        },
+                        'fields': ['precId', 'title', 'caseNum',  'date', 'court.*', 'caseType.*', 'judgementType', 'sentence', 'issues.text', 'issues.refClauses', 'issues.refPrecs', 'judge', 'citationCount'],
+                        "_source": False
+                    }
+                )['hits']['hits'])]
+                for i in range(len(res)):
+                    res[i] = {**res[i], 'court': {'name': res[i]['court.name'], 'code': res[i]['court.code']},
+                              'caseType': {'name': res[i]['caseType.name'], 'code': res[i]['caseType.code']}}
+                    del res[i]['court.name']
+                    del res[i]['court.code']
+                    del res[i]['caseType.name']
+                    del res[i]['caseType.code']
+                res = jsonify(precs=res)
         except ConnectionError:
             res = redirect('/error', 500)
         return res

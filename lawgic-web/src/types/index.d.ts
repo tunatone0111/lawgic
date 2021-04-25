@@ -7,6 +7,12 @@ declare module "@material-ui/core/styles/createPalette" {
 	}
 }
 
+type LikedContext = {
+	likedPrecs: number[];
+	addPrec: (number) => void;
+	delPrec: (number) => void;
+};
+
 interface Court {
 	name: string;
 	code: 400201 | 400202;

@@ -1,29 +1,37 @@
-import { Grid, makeStyles } from "@material-ui/core";
+import { Grid, makeStyles, Container, Button } from "@material-ui/core";
 import React from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams, useHistory } from "react-router-dom";
 import BackButton from "../components/common/BackButton";
+import Report from "../components/Report";
 const useStyles = makeStyles((theme) => ({
 	iframe: {
 		width: "100%",
-		height: "90vh",
+		height: "85vh",
+	},
+	box: {
+		marginTop: theme.spacing(2),
 	},
 }));
 
 function Precs() {
 	const classes = useStyles();
+	const history = useHistory();
 	const { id } = useParams<{ id: string }>();
 	return (
-		<Grid container>
-			<Grid item xs={1}>
-				<BackButton />
+		<Container>
+			<iframe
+				className={classes.iframe}
+				src={`https://www.law.go.kr/LSW/precInfoP.do?precSeq=${id}&mode=0#AJAX`}
+			></iframe>
+			<Grid container justify="flex-end" className={classes.box}>
+				<Grid item>
+					<Button variant="contained" onClick={history.goBack}>
+						목록으로 돌아가기
+					</Button>
+				</Grid>
 			</Grid>
-			<Grid item xs={10}>
-				<iframe
-					className={classes.iframe}
-					src={`https://www.law.go.kr/LSW/precInfoP.do?precSeq=${id}&mode=0#AJAX`}
-				></iframe>
-			</Grid>
-		</Grid>
+			<Report />
+		</Container>
 	);
 }
 
